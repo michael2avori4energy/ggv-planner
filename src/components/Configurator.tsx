@@ -13,6 +13,7 @@ import Autocomplete from 'react-google-autocomplete';
 export const Configurator: React.FC = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedYearIndex, setSelectedYearIndex] = useState(0);
 
   // State: Inputs
   const [system, setSystem] = useState<SystemParams>({
@@ -56,7 +57,7 @@ export const Configurator: React.FC = () => {
   // State: Results (with dummy defaults before first load)
   const [energy, setEnergy] = useState<EnergyResults>({
     totalYieldKwh: 0, selfConsumptionKwh: 0, gridSupplyKwh: 0, gridExportKwh: 0,
-    autarkyRate: 0, selfConsumptionRate: 0, totalConsumptionKwh: 0
+    autarkyRate: 0, selfConsumptionRate: 0, totalConsumptionKwh: 0, pvDirectConsumptionKwh: 0, batteryDischargeKwh: 0
   });
 
   const [ecoResults, setEcoResults] = useState<EconomicResults>({
@@ -235,7 +236,7 @@ export const Configurator: React.FC = () => {
           {activeTab === 2 && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <Euro className="text-emerald-500" />
+                <Euro className="text-slate-500" />
                 Wirtschaftliche Parameter
               </h2>
 
@@ -329,7 +330,7 @@ export const Configurator: React.FC = () => {
           {activeTab === 3 && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 h-full flex flex-col">
               <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <LineChart className="text-indigo-500" />
+                <LineChart className="text-blue-500" />
                 Ergebnisse & Analyse
               </h2>
 
@@ -341,13 +342,69 @@ export const Configurator: React.FC = () => {
                     <div className="mt-4 text-sm text-slate-600 space-y-2 w-full px-4">
                       <div className="flex justify-between border-b border-slate-200 pb-1"><span>PV-Erzeugung:</span> <span className="font-medium">{energy.totalYieldKwh.toFixed(0)} kWh</span></div>
                       <div className="flex justify-between border-b border-slate-200 pb-1"><span>Gesamtbedarf:</span> <span className="font-medium">{energy.totalConsumptionKwh.toFixed(0)} kWh</span></div>
-                      <div className="flex justify-between pb-1"><span>Netzeinspeisung:</span> <span className="font-medium text-amber-500">{energy.gridExportKwh.toFixed(0)} kWh</span></div>
+                      <div className="flex justify-between pb-1"><span>Netzeinspeisung:</span> <span className="font-medium text-slate-500">{energy.gridExportKwh.toFixed(0)} kWh</span></div>
                     </div>
                   </div>
 
                   <div className="lg:col-span-2">
                     <h3 className="font-semibold text-slate-700 mb-4 ml-12">Cashflow-Entwicklung über {economics.calculationPeriodYears} Jahre</h3>
-                    <CashflowChart data={ecoResults.cashflowPlan} />
+                    <CashflowChart data={ecoResults.cashflowPlan} onBarClick={(idx: number) => setSelectedYearIndex(idx)} />
+                    
+                    {ecoResults.cashflowPlan.length > 0 && (
+                      <div className="mt-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm lg:mx-12">
+                        <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
+                          <h4 className="font-semibold text-slate-700">Details für Jahr {ecoResults.cashflowPlan[selectedYearIndex]?.year ?? (selectedYearIndex + 1)}</h4>
+                        </div>
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm text-left">
+                            <thead className="bg-slate-50 text-slate-500 border-b border-slate-200">
+                              <tr>
+                                <th className="px-4 py-2 font-medium">Position</th>
+                                <th className="px-4 py-2 font-medium text-right">Betrag (€)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr className="border-b border-slate-100">
+                                <td className="px-4 py-2 font-medium text-slate-700">Einnahmen (Gesamt)</td>
+                                <td className="px-4 py-2 text-right text-blue-600 font-medium">{ecoResults.cashflowPlan[selectedYearIndex]?.totalRevenue.toFixed(2)}</td>
+                              </tr>
+                              {economics.model === 'Mieterstrom' && (
+                                <>
+                                  <tr className="border-b border-slate-100 bg-slate-50/50">
+                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">- Mieterstrom</td>
+                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueTenantElectricity.toFixed(2)}</td>
+                                  </tr>
+                                  <tr className="border-b border-slate-100 bg-slate-50/50">
+                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">- Grundgebühr</td>
+                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueBaseFee.toFixed(2)}</td>
+                                  </tr>
+                                  <tr className="border-b border-slate-100 bg-slate-50/50">
+                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">- Mieterstromzuschlag</td>
+                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueSubsidy.toFixed(2)}</td>
+                                  </tr>
+                                </>
+                              )}
+                              <tr className="border-b border-slate-100 bg-slate-50/50">
+                                <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">- Einspeisung</td>
+                                <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueFeedIn.toFixed(2)}</td>
+                              </tr>
+                              <tr className="border-b border-slate-100">
+                                <td className="px-4 py-2 font-medium text-slate-700">Betriebskosten (OPEX)</td>
+                                <td className="px-4 py-2 text-right text-slate-600">-{ecoResults.cashflowPlan[selectedYearIndex]?.opex.toFixed(2)}</td>
+                              </tr>
+                              <tr className="border-b border-slate-100">
+                                <td className="px-4 py-2 font-medium text-slate-700">Annuität</td>
+                                <td className="px-4 py-2 text-right text-slate-600">-{ecoResults.cashflowPlan[selectedYearIndex]?.loanInstallment.toFixed(2)}</td>
+                              </tr>
+                              <tr className="bg-blue-50">
+                                <td className="px-4 py-3 font-semibold text-slate-800">Cashflow vor Steuern</td>
+                                <td className="px-4 py-3 text-right font-bold text-slate-800">{ecoResults.cashflowPlan[selectedYearIndex]?.cashflow.toFixed(2)}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (

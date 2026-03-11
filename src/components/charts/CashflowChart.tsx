@@ -14,9 +14,10 @@ import { YearlyCashflow } from '../../types';
 
 interface CashflowChartProps {
   data: YearlyCashflow[];
+  onBarClick?: (index: number) => void;
 }
 
-export const CashflowChart: React.FC<CashflowChartProps> = ({ data }) => {
+export const CashflowChart: React.FC<CashflowChartProps> = ({ data, onBarClick }) => {
   return (
     <div className="h-96 w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -27,6 +28,11 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data }) => {
             right: 30,
             left: 20,
             bottom: 5,
+          }}
+          onClick={(e) => {
+            if (e && e.activeTooltipIndex !== undefined && onBarClick) {
+              onBarClick(e.activeTooltipIndex);
+            }
           }}
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -44,8 +50,8 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data }) => {
           <ReferenceLine y={0} stroke="#94a3b8" />
           
           <Bar dataKey="totalRevenue" name="Einnahmen p.a." fill="#3b82f6" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="opex" name="Betriebskosten (OPEX)" fill="#ef4444" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="loanInstallment" name="Annuität" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="opex" name="Betriebskosten (OPEX)" fill="#94a3b8" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="loanInstallment" name="Annuität" fill="#cbd5e1" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

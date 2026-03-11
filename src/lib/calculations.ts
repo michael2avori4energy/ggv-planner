@@ -57,7 +57,9 @@ export function calculateEnergyYield(
       gridSupplyKwh: 0,
       gridExportKwh: pvYieldKwh,
       autarkyRate: 0,
-      selfConsumptionRate: 0
+      selfConsumptionRate: 0,
+      pvDirectConsumptionKwh: 0,
+      batteryDischargeKwh: 0
     };
   }
 
@@ -65,23 +67,30 @@ export function calculateEnergyYield(
   // Batterieanteil verschiebt dies weiter nach oben.
   
   // Basiseigenverbrauch (sehr vereinfachte Heuristik für SaaS-Demozwecke statt 15min-Profile)
-  let selfConsumptionRate = pvYieldKwh > 0 ? (totalConsumptionKwh / pvYieldKwh) * 0.35 : 0;
+  let pvDirectConsumptionRate = pvYieldKwh > 0 ? (totalConsumptionKwh / pvYieldKwh) * 0.35 : 0;
   
+  let batteryDischargeRate = 0;
   if (system.hasBattery && system.batteryCapacityKwh > 0) {
     // Batterie-Einfluss (Kapazität im Verhältnis zum Verbrauch)
     const speicherFaktor = system.batteryCapacityKwh / (totalConsumptionKwh / 365); // Speichertage
-    const batteryAutarkyGain = Math.min(speicherFaktor * 0.4, 0.4); // max +40% durch Speicher
-    selfConsumptionRate += batteryAutarkyGain;
+    batteryDischargeRate = Math.min(speicherFaktor * 0.4, 0.4); // max +40% durch Speicher
   }
 
   // Cap bei realistischen Maxima (zusammen max ca. 80-85% ohne Saisonspeicher) und physikalischem Limit
-  selfConsumptionRate = Math.min(selfConsumptionRate, 0.85);
-  
-  let selfConsumptionKwh = pvYieldKwh * selfConsumptionRate;
+  let totalRate = Math.min(pvDirectConsumptionRate + batteryDischargeRate, 0.85);
+  pvDirectConsumptionRate = Math.min(pvDirectConsumptionRate, 0.85);
+  batteryDischargeRate = Math.min(batteryDischargeRate, totalRate - pvDirectConsumptionRate);
+
+  let pvDirectConsumptionKwh = pvYieldKwh * pvDirectConsumptionRate;
+  let batteryDischargeKwh = pvYieldKwh * batteryDischargeRate;
+  let selfConsumptionKwh = pvDirectConsumptionKwh + batteryDischargeKwh;
   
   // Darf Verbrauch nicht übersteigen
   if (selfConsumptionKwh > totalConsumptionKwh) {
+    const ratio = totalConsumptionKwh / selfConsumptionKwh;
     selfConsumptionKwh = totalConsumptionKwh;
+    pvDirectConsumptionKwh *= ratio;
+    batteryDischargeKwh *= ratio;
   }
   
   const gridExportKwh = Math.max(0, pvYieldKwh - selfConsumptionKwh);
@@ -97,7 +106,9 @@ export function calculateEnergyYield(
     gridSupplyKwh,
     gridExportKwh,
     autarkyRate,
-    selfConsumptionRate: actualSelfConsumptionRate
+    selfConsumptionRate: actualSelfConsumptionRate,
+    pvDirectConsumptionKwh,
+    batteryDischargeKwh
   };
 }
 

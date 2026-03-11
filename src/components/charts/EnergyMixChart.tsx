@@ -6,11 +6,12 @@ interface EnergyMixChartProps {
   energy: EnergyResults;
 }
 
-const COLORS = ['#22c55e', '#ef4444']; // Grün für PV/Batterie (Eigenverb.), Rot für Netzbezug
+const COLORS = ['#2563eb', '#60a5fa', '#94a3b8']; // Blau (PV), Hellblau (Batterie), Grau (Netz)
 
 export const EnergyMixChart: React.FC<EnergyMixChartProps> = ({ energy }) => {
   const data = [
-    { name: 'Eigenversorgung (PV+Speicher)', value: energy.selfConsumptionKwh },
+    { name: 'PV-Erzeugung', value: energy.pvDirectConsumptionKwh },
+    ...(energy.batteryDischargeKwh > 0 ? [{ name: 'Batteriebezug', value: energy.batteryDischargeKwh }] : []),
     { name: 'Netzbezug', value: energy.gridSupplyKwh },
   ];
 

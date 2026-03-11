@@ -51,6 +51,8 @@ export interface EnergyResults {
   autarkyRate: number;           // Autarkiegrad (%)
   selfConsumptionRate: number;   // Eigenverbrauchsquote (%)
   totalConsumptionKwh: number;   // Gesamtverbrauch
+  pvDirectConsumptionKwh: number; // Direktverbrauch PV
+  batteryDischargeKwh: number;   // Batterie-Entladung
 }
 
 export interface YearlyCashflow {
