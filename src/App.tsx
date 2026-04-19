@@ -10,8 +10,7 @@ const AppInner = () => {
         <div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
             {lang === 'de' ? 'Mieterstrom' : 'Tenant Electricity'}{' '}
-            <span className="text-blue-600">&</span>{' '}
-            GGV Planner
+            <span className="text-blue-600">&</span> GGV Planner
           </h1>
           <p className="text-slate-500 text-sm mt-1">{t.appSubtitle}</p>
         </div>

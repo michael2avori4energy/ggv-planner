@@ -26,8 +26,16 @@ export const Tooltip: React.FC<TooltipProps> = ({ text }) => {
   }, [visible]);
 
   return (
-    <div ref={ref} className="relative inline-flex items-center ml-1.5" onMouseEnter={handleMouseEnter} onMouseLeave={() => setVisible(false)}>
-      <Info size={13} className="text-slate-400 cursor-help hover:text-blue-400 transition-colors flex-shrink-0" />
+    <div
+      ref={ref}
+      className="relative inline-flex items-center ml-1.5"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={() => setVisible(false)}
+    >
+      <Info
+        size={13}
+        className="text-slate-400 cursor-help hover:text-blue-400 transition-colors flex-shrink-0"
+      />
       {visible && (
         <div
           className={`absolute z-50 w-64 bg-slate-800 text-white text-xs rounded-lg px-3 py-2.5 shadow-xl leading-relaxed pointer-events-none ${

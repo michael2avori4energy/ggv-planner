@@ -11,7 +11,9 @@ const COLORS = ['#2563eb', '#60a5fa', '#94a3b8']; // Blau (PV), Hellblau (Batter
 export const EnergyMixChart: React.FC<EnergyMixChartProps> = ({ energy }) => {
   const data = [
     { name: 'PV-Erzeugung', value: energy.pvDirectConsumptionKwh },
-    ...(energy.batteryDischargeKwh > 0 ? [{ name: 'Batteriebezug', value: energy.batteryDischargeKwh }] : []),
+    ...(energy.batteryDischargeKwh > 0
+      ? [{ name: 'Batteriebezug', value: energy.batteryDischargeKwh }]
+      : []),
     { name: 'Netzbezug', value: energy.gridSupplyKwh },
   ];
 
@@ -32,11 +34,15 @@ export const EnergyMixChart: React.FC<EnergyMixChartProps> = ({ energy }) => {
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip 
+          <Tooltip
             formatter={(value: number) => [`${value.toFixed(0)} kWh`, 'Energie']}
-            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+            contentStyle={{
+              borderRadius: '8px',
+              border: 'none',
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+            }}
           />
-          <Legend verticalAlign="bottom" height={36}/>
+          <Legend verticalAlign="bottom" height={36} />
         </PieChart>
       </ResponsiveContainer>
     </div>

@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  ReferenceLine
+  ReferenceLine,
 } from 'recharts';
 import { YearlyCashflow } from '../../types';
 
@@ -37,18 +37,22 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data, onBarClick }
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
           <XAxis dataKey="year" axisLine={false} tickLine={false} />
-          <YAxis 
-            tickFormatter={(val) => `${(val / 1000).toFixed(0)}k`} 
-            axisLine={false} 
+          <YAxis
+            tickFormatter={(val) => `${(val / 1000).toFixed(0)}k`}
+            axisLine={false}
             tickLine={false}
           />
-          <Tooltip 
+          <Tooltip
             formatter={(value: number) => [`${value.toFixed(0)} €`, '']}
-            contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+            contentStyle={{
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+            }}
           />
           <Legend />
           <ReferenceLine y={0} stroke="#94a3b8" />
-          
+
           <Bar dataKey="totalRevenue" name="Einnahmen p.a." fill="#3b82f6" radius={[4, 4, 0, 0]} />
           <Bar dataKey="opex" name="Betriebskosten (OPEX)" fill="#94a3b8" radius={[4, 4, 0, 0]} />
           <Bar dataKey="loanInstallment" name="Annuität" fill="#cbd5e1" radius={[4, 4, 0, 0]} />

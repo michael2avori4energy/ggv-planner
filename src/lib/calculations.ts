@@ -1,11 +1,11 @@
-import { 
-  SystemParams, 
-  ConsumptionParams, 
-  EconomicParams, 
+import {
+  SystemParams,
+  ConsumptionParams,
+  EconomicParams,
   FinancingParams,
   EnergyResults,
   EconomicResults,
-  YearlyCashflow
+  YearlyCashflow,
 } from '../types';
 
 /**
@@ -13,7 +13,7 @@ import {
  */
 export async function fetchPvgisYield(system: SystemParams): Promise<number> {
   const { locationLat, locationLon, pvCapacityKwp, systemLoss, inclination, azimuth } = system;
-  
+
   if (pvCapacityKwp === 0) return 0;
   if (!locationLat || !locationLon) {
     // Fallback Approximation wenn keine Koordinaten da sind (~1000 kWh/kWp)
@@ -24,12 +24,12 @@ export async function fetchPvgisYield(system: SystemParams): Promise<number> {
     const url = `https://re.jrc.ec.europa.eu/api/v5_2/PVcalc?lat=${locationLat}&lon=${locationLon}&peakpower=${pvCapacityKwp}&loss=${systemLoss}&angle=${inclination}&aspect=${azimuth}&outputformat=json`;
     const response = await fetch(url);
     const data = await response.json();
-    
+
     // PVGIS v5.2 JSON Response structure: data.outputs.totals.fixed.E_y
     const yearlyYield = data?.outputs?.totals?.fixed?.E_y;
-    return yearlyYield || (pvCapacityKwp * 1000); // Fallback falls API keine Daten liefert
+    return yearlyYield || pvCapacityKwp * 1000; // Fallback falls API keine Daten liefert
   } catch (err) {
-    console.error("Error fetching PVGIS data:", err);
+    console.error('Error fetching PVGIS data:', err);
     return pvCapacityKwp * 1000;
   }
 }
@@ -38,15 +38,17 @@ export async function fetchPvgisYield(system: SystemParams): Promise<number> {
  * Berechnet Ertrag, Eigenverbrauch und Netzbezug
  */
 export function calculateEnergyYield(
-  pvYieldKwh: number, 
-  system: SystemParams, 
+  pvYieldKwh: number,
+  system: SystemParams,
   consumption: ConsumptionParams
 ): EnergyResults {
   // Gesamtverbrauch berechnen
-  const totalConsumptionKwh = 
-    (consumption.apartments * consumption.consumptionPerApartmentKwh) +
+  const totalConsumptionKwh =
+    consumption.apartments * consumption.consumptionPerApartmentKwh +
     (consumption.hasHeatPump ? consumption.heatPumpConsumptionKwh : 0) +
-    (consumption.hasEvCharging ? (consumption.evChargingPoints * consumption.evChargingConsumptionPerPointKwh) : 0) +
+    (consumption.hasEvCharging
+      ? consumption.evChargingPoints * consumption.evChargingConsumptionPerPointKwh
+      : 0) +
     consumption.generalConsumptionKwh;
 
   if (totalConsumptionKwh === 0) {
@@ -59,16 +61,16 @@ export function calculateEnergyYield(
       autarkyRate: 0,
       selfConsumptionRate: 0,
       pvDirectConsumptionKwh: 0,
-      batteryDischargeKwh: 0
+      batteryDischargeKwh: 0,
     };
   }
 
   // Faustformel/Approximation: Grundautarkie ohne Speicher (typischerweise ~30-40% des regulären Verbrauchs, weniger für WP/E-Auto)
   // Batterieanteil verschiebt dies weiter nach oben.
-  
+
   // Basiseigenverbrauch (sehr vereinfachte Heuristik für SaaS-Demozwecke statt 15min-Profile)
   let pvDirectConsumptionRate = pvYieldKwh > 0 ? (totalConsumptionKwh / pvYieldKwh) * 0.35 : 0;
-  
+
   let batteryDischargeRate = 0;
   if (system.hasBattery && system.batteryCapacityKwh > 0) {
     // Batterie-Einfluss (Kapazität im Verhältnis zum Verbrauch)
@@ -84,7 +86,7 @@ export function calculateEnergyYield(
   let pvDirectConsumptionKwh = pvYieldKwh * pvDirectConsumptionRate;
   let batteryDischargeKwh = pvYieldKwh * batteryDischargeRate;
   let selfConsumptionKwh = pvDirectConsumptionKwh + batteryDischargeKwh;
-  
+
   // Darf Verbrauch nicht übersteigen
   if (selfConsumptionKwh > totalConsumptionKwh) {
     const ratio = totalConsumptionKwh / selfConsumptionKwh;
@@ -92,10 +94,10 @@ export function calculateEnergyYield(
     pvDirectConsumptionKwh *= ratio;
     batteryDischargeKwh *= ratio;
   }
-  
+
   const gridExportKwh = Math.max(0, pvYieldKwh - selfConsumptionKwh);
   const gridSupplyKwh = Math.max(0, totalConsumptionKwh - selfConsumptionKwh);
-  
+
   const autarkyRate = (selfConsumptionKwh / totalConsumptionKwh) * 100;
   const actualSelfConsumptionRate = pvYieldKwh > 0 ? (selfConsumptionKwh / pvYieldKwh) * 100 : 0;
 
@@ -108,7 +110,7 @@ export function calculateEnergyYield(
     autarkyRate,
     selfConsumptionRate: actualSelfConsumptionRate,
     pvDirectConsumptionKwh,
-    batteryDischargeKwh
+    batteryDischargeKwh,
   };
 }
 
@@ -117,12 +119,13 @@ export function calculateEnergyYield(
  */
 function calculateAnnuity(principal: number, years: number, interestRatePercent: number) {
   if (principal <= 0 || years <= 0) return { installment: 0, interest: 0, principal: 0 };
-  if (interestRatePercent === 0) return { installment: principal / years, interest: 0, principal: principal / years };
+  if (interestRatePercent === 0)
+    return { installment: principal / years, interest: 0, principal: principal / years };
 
   const r = interestRatePercent / 100;
   const factor = Math.pow(1 + r, years);
   const installment = principal * ((r * factor) / (factor - 1));
-  
+
   return { installment };
 }
 
@@ -130,21 +133,25 @@ function calculateAnnuity(principal: number, years: number, interestRatePercent:
  * Berechnet Cashflow und Wirtschaftlichkeit über die Laufzeit
  */
 export function calculateEconomics(
-  energy: EnergyResults, 
-  economics: EconomicParams, 
+  energy: EnergyResults,
+  economics: EconomicParams,
   financing: FinancingParams,
   consumption: ConsumptionParams
 ): EconomicResults {
   const { calculationPeriodYears } = economics;
-  
+
   const cashflowPlan: YearlyCashflow[] = [];
-  
+
   // LCOE Berechnen: (CAPEX + Sum(OPEX) + Zinsen) / Sum(Ertrag) (vereinfacht ohne Diskontierung)
-  const { installment } = calculateAnnuity(financing.loanAmount, financing.loanTermYears, financing.interestRate);
-  
+  const { installment } = calculateAnnuity(
+    financing.loanAmount,
+    financing.loanTermYears,
+    financing.interestRate
+  );
+
   let remainingLoan = financing.loanAmount;
   let totalInterestPaid = 0;
-  let cumulativeCashflow = - (economics.capex - financing.loanAmount); // Eigenkapital-Einsatz in Jahr 0 abziehen
+  let cumulativeCashflow = -(economics.capex - financing.loanAmount); // Eigenkapital-Einsatz in Jahr 0 abziehen
 
   for (let year = 1; year <= calculationPeriodYears; year++) {
     // Kredit Berechnungen
@@ -155,20 +162,21 @@ export function calculateEconomics(
     if (year <= financing.loanTermYears && remainingLoan > 0) {
       interestPaid = remainingLoan * (financing.interestRate / 100);
       principalPaid = installment - interestPaid;
-      
+
       if (principalPaid > remainingLoan) {
         principalPaid = remainingLoan;
       }
-      
+
       remainingLoan -= principalPaid;
       currentInstallment = interestPaid + principalPaid;
       totalInterestPaid += interestPaid;
     }
 
     // Einnahmen generieren (ct in Euro umrechnen via /100)
-    const revenueTenantElectricity = energy.selfConsumptionKwh * (economics.tenantElectricityRate / 100);
+    const revenueTenantElectricity =
+      energy.selfConsumptionKwh * (economics.tenantElectricityRate / 100);
     const revenueFeedIn = energy.gridExportKwh * (economics.feedInTariff / 100);
-    
+
     let revenueBaseFee = 0;
     let revenueSubsidy = 0;
 
@@ -180,7 +188,7 @@ export function calculateEconomics(
 
     const totalRevenue = revenueTenantElectricity + revenueFeedIn + revenueBaseFee + revenueSubsidy;
     const cashflow = totalRevenue - economics.opexPerYear - currentInstallment;
-    
+
     cumulativeCashflow += cashflow;
 
     cashflowPlan.push({
@@ -197,7 +205,7 @@ export function calculateEconomics(
       loanRemaining: remainingLoan,
       cashflow,
       cumulativeCashflow,
-      lcoe: null
+      lcoe: null,
     });
   }
 
@@ -231,6 +239,6 @@ export function calculateEconomics(
     lcoe,
     amortizationYears,
     roi,
-    cashflowPlan
+    cashflowPlan,
   };
 }

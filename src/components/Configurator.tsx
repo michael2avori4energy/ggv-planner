@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  SystemParams, ConsumptionParams, EconomicParams, FinancingParams,
-  EnergyResults, EconomicResults
+  SystemParams,
+  ConsumptionParams,
+  EconomicParams,
+  FinancingParams,
+  EnergyResults,
+  EconomicResults,
 } from '../types';
 import { fetchPvgisYield, calculateEnergyYield, calculateEconomics } from '../lib/calculations';
 import { KPIDisplay } from './KPIDisplay';
@@ -21,14 +25,14 @@ export const Configurator: React.FC = () => {
   // State: Inputs
   const [system, setSystem] = useState<SystemParams>({
     address: 'Berlin, Germany',
-    locationLat: 52.5200,
-    locationLon: 13.4050,
+    locationLat: 52.52,
+    locationLon: 13.405,
     inclination: 30,
     azimuth: 0,
     systemLoss: 14,
     pvCapacityKwp: 50,
     hasBattery: true,
-    batteryCapacityKwh: 20
+    batteryCapacityKwh: 20,
   });
 
   const [consumption, setConsumption] = useState<ConsumptionParams>({
@@ -39,7 +43,7 @@ export const Configurator: React.FC = () => {
     hasEvCharging: true,
     evChargingPoints: 2,
     evChargingConsumptionPerPointKwh: 2500,
-    generalConsumptionKwh: 2000
+    generalConsumptionKwh: 2000,
   });
 
   const [economics, setEconomics] = useState<EconomicParams>({
@@ -48,26 +52,36 @@ export const Configurator: React.FC = () => {
     gridElectricityRate: 35,
     feedInTariff: 7.1,
     tenantElectricitySubsidy: 2.1,
-    baseFeePerMonth: 9.90,
+    baseFeePerMonth: 9.9,
     capex: 75000,
     opexPerYear: 1500,
-    calculationPeriodYears: 20
+    calculationPeriodYears: 20,
   });
 
   const [financing, setFinancing] = useState<FinancingParams>({
     loanAmount: 50000,
     loanTermYears: 10,
-    interestRate: 4.5
+    interestRate: 4.5,
   });
 
   // State: Results (with dummy defaults)
   const [energy, setEnergy] = useState<EnergyResults>({
-    totalYieldKwh: 0, selfConsumptionKwh: 0, gridSupplyKwh: 0, gridExportKwh: 0,
-    autarkyRate: 0, selfConsumptionRate: 0, totalConsumptionKwh: 0, pvDirectConsumptionKwh: 0, batteryDischargeKwh: 0
+    totalYieldKwh: 0,
+    selfConsumptionKwh: 0,
+    gridSupplyKwh: 0,
+    gridExportKwh: 0,
+    autarkyRate: 0,
+    selfConsumptionRate: 0,
+    totalConsumptionKwh: 0,
+    pvDirectConsumptionKwh: 0,
+    batteryDischargeKwh: 0,
   });
 
   const [ecoResults, setEcoResults] = useState<EconomicResults>({
-    lcoe: 0, amortizationYears: null, roi: 0, cashflowPlan: []
+    lcoe: 0,
+    amortizationYears: null,
+    roi: 0,
+    cashflowPlan: [],
   });
 
   // Effect: Recalculate everything when inputs change
@@ -89,31 +103,40 @@ export const Configurator: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [system, consumption, economics, financing]);
 
-  const inputClass = 'w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white transition-colors outline-none focus:border-blue-500';
-  const inputClassEco = 'w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-blue-500';
+  const inputClass =
+    'w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white transition-colors outline-none focus:border-blue-500';
+  const inputClassEco =
+    'w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-blue-500';
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-
       {/* Header / KPIs */}
       <KPIDisplay energy={energy} economics={ecoResults} />
 
       {/* Main Content Area */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col md:flex-row min-h-[600px]">
-
         {/* Sidebar Tabs */}
         <div className="md:w-64 bg-slate-50 border-r border-slate-200 flex flex-row md:flex-col">
-          <button onClick={() => setActiveTab(1)} className={`flex-1 md:flex-none flex items-center gap-3 p-4 md:px-6 md:py-5 text-left transition-colors font-medium text-sm ${activeTab === 1 ? 'bg-blue-50 text-blue-700 border-b-2 md:border-b-0 md:border-r-2 border-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}>
+          <button
+            onClick={() => setActiveTab(1)}
+            className={`flex-1 md:flex-none flex items-center gap-3 p-4 md:px-6 md:py-5 text-left transition-colors font-medium text-sm ${activeTab === 1 ? 'bg-blue-50 text-blue-700 border-b-2 md:border-b-0 md:border-r-2 border-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}
+          >
             <Zap size={20} className={activeTab === 1 ? 'text-blue-600' : 'text-slate-400'} />
             <span className="hidden md:block">{t.tab1}</span>
           </button>
 
-          <button onClick={() => setActiveTab(2)} className={`flex-1 md:flex-none flex items-center gap-3 p-4 md:px-6 md:py-5 text-left transition-colors font-medium text-sm ${activeTab === 2 ? 'bg-blue-50 text-blue-700 border-b-2 md:border-b-0 md:border-r-2 border-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}>
+          <button
+            onClick={() => setActiveTab(2)}
+            className={`flex-1 md:flex-none flex items-center gap-3 p-4 md:px-6 md:py-5 text-left transition-colors font-medium text-sm ${activeTab === 2 ? 'bg-blue-50 text-blue-700 border-b-2 md:border-b-0 md:border-r-2 border-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}
+          >
             <Euro size={20} className={activeTab === 2 ? 'text-blue-600' : 'text-slate-400'} />
             <span className="hidden md:block">{t.tab2}</span>
           </button>
 
-          <button onClick={() => setActiveTab(3)} className={`flex-1 md:flex-none flex items-center gap-3 p-4 md:px-6 md:py-5 text-left transition-colors font-medium text-sm ${activeTab === 3 ? 'bg-blue-50 text-blue-700 border-b-2 md:border-b-0 md:border-r-2 border-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}>
+          <button
+            onClick={() => setActiveTab(3)}
+            className={`flex-1 md:flex-none flex items-center gap-3 p-4 md:px-6 md:py-5 text-left transition-colors font-medium text-sm ${activeTab === 3 ? 'bg-blue-50 text-blue-700 border-b-2 md:border-b-0 md:border-r-2 border-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}
+          >
             <LineChart size={20} className={activeTab === 3 ? 'text-blue-600' : 'text-slate-400'} />
             <span className="hidden md:block">{t.tab3}</span>
           </button>
@@ -121,7 +144,6 @@ export const Configurator: React.FC = () => {
 
         {/* Tab Content */}
         <div className="flex-1 p-6 md:p-8 relative">
-
           {isLoading && (
             <div className="absolute top-4 right-6 items-center gap-2 text-blue-500 font-medium text-sm hidden md:flex">
               <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
@@ -140,7 +162,9 @@ export const Configurator: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* PV System */}
                 <div className="space-y-5">
-                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">{t.sectionPV}</h3>
+                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">
+                    {t.sectionPV}
+                  </h3>
 
                   <div>
                     <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
@@ -148,18 +172,27 @@ export const Configurator: React.FC = () => {
                       <Tooltip text={t.tooltipAddress} />
                     </label>
                     <div className="relative flex items-center">
-                      <MapPin className="absolute left-3 text-slate-400 pointer-events-none" size={18} />
+                      <MapPin
+                        className="absolute left-3 text-slate-400 pointer-events-none"
+                        size={18}
+                      />
                       <Autocomplete
                         apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                         onPlaceSelected={(place: google.maps.places.PlaceResult) => {
                           if (place && place.geometry && place.geometry.location) {
-                            const lat = typeof place.geometry.location.lat === 'function' ? place.geometry.location.lat() : place.geometry.location.lat;
-                            const lon = typeof place.geometry.location.lng === 'function' ? place.geometry.location.lng() : place.geometry.location.lng;
+                            const lat =
+                              typeof place.geometry.location.lat === 'function'
+                                ? place.geometry.location.lat()
+                                : place.geometry.location.lat;
+                            const lon =
+                              typeof place.geometry.location.lng === 'function'
+                                ? place.geometry.location.lng()
+                                : place.geometry.location.lng;
                             setSystem({
                               ...system,
                               address: place.formatted_address || system.address,
                               locationLat: Number(lat),
-                              locationLon: Number(lon)
+                              locationLon: Number(lon),
                             });
                           }
                         }}
@@ -170,7 +203,9 @@ export const Configurator: React.FC = () => {
                       />
                     </div>
                     <p className="text-xs text-slate-500 mt-1">
-                      {t.addressCoords.replace('{lat}', system.locationLat.toFixed(4)).replace('{lon}', system.locationLon.toFixed(4))}
+                      {t.addressCoords
+                        .replace('{lat}', system.locationLat.toFixed(4))
+                        .replace('{lon}', system.locationLon.toFixed(4))}
                     </p>
                   </div>
 
@@ -180,12 +215,19 @@ export const Configurator: React.FC = () => {
                         {t.labelPvCapacity}
                         <Tooltip text={t.tooltipPvCapacity} />
                       </span>
-                      <span className="text-blue-600 font-semibold">{system.pvCapacityKwp} kWp</span>
+                      <span className="text-blue-600 font-semibold">
+                        {system.pvCapacityKwp} kWp
+                      </span>
                     </label>
                     <input
-                      type="range" min="0" max="500" step="5"
+                      type="range"
+                      min="0"
+                      max="500"
+                      step="5"
                       value={system.pvCapacityKwp}
-                      onChange={(e) => setSystem({ ...system, pvCapacityKwp: Number(e.target.value) })}
+                      onChange={(e) =>
+                        setSystem({ ...system, pvCapacityKwp: Number(e.target.value) })
+                      }
                       className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
                   </div>
@@ -193,9 +235,18 @@ export const Configurator: React.FC = () => {
                   <div className="flex items-center gap-3 pt-2 w-full">
                     <label className="flex items-center gap-2 cursor-pointer flex-1">
                       <div className="relative">
-                        <input type="checkbox" className="sr-only" checked={system.hasBattery} onChange={(e) => setSystem({ ...system, hasBattery: e.target.checked })} />
-                        <div className={`block w-10 h-6 rounded-full transition-colors ${system.hasBattery ? 'bg-blue-500' : 'bg-slate-300'}`}></div>
-                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${system.hasBattery ? 'transform translate-x-4' : ''}`}></div>
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={system.hasBattery}
+                          onChange={(e) => setSystem({ ...system, hasBattery: e.target.checked })}
+                        />
+                        <div
+                          className={`block w-10 h-6 rounded-full transition-colors ${system.hasBattery ? 'bg-blue-500' : 'bg-slate-300'}`}
+                        ></div>
+                        <div
+                          className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${system.hasBattery ? 'transform translate-x-4' : ''}`}
+                        ></div>
                       </div>
                       <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
                         <Battery size={16} /> {t.labelBattery}
@@ -205,7 +256,14 @@ export const Configurator: React.FC = () => {
 
                     {system.hasBattery && (
                       <div className="flex-1 flex items-center gap-2">
-                        <input type="number" value={system.batteryCapacityKwh} onChange={(e) => setSystem({ ...system, batteryCapacityKwh: Number(e.target.value) })} className="w-20 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        <input
+                          type="number"
+                          value={system.batteryCapacityKwh}
+                          onChange={(e) =>
+                            setSystem({ ...system, batteryCapacityKwh: Number(e.target.value) })
+                          }
+                          className="w-20 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
+                        />
                         <span className="text-sm text-slate-600">{t.labelBatteryCapacity}</span>
                       </div>
                     )}
@@ -214,7 +272,9 @@ export const Configurator: React.FC = () => {
 
                 {/* Consumption */}
                 <div className="space-y-5">
-                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">{t.sectionConsumption}</h3>
+                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">
+                    {t.sectionConsumption}
+                  </h3>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -222,23 +282,51 @@ export const Configurator: React.FC = () => {
                         <Home size={14} className="mr-1" /> {t.labelApartments}
                         <Tooltip text={t.tooltipApartments} />
                       </label>
-                      <input type="number" value={consumption.apartments} onChange={(e) => setConsumption({ ...consumption, apartments: Number(e.target.value) })} className={inputClass} />
+                      <input
+                        type="number"
+                        value={consumption.apartments}
+                        onChange={(e) =>
+                          setConsumption({ ...consumption, apartments: Number(e.target.value) })
+                        }
+                        className={inputClass}
+                      />
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelConsumptionPerApartment}
                         <Tooltip text={t.tooltipConsumptionPerApartment} />
                       </label>
-                      <input type="number" value={consumption.consumptionPerApartmentKwh} onChange={(e) => setConsumption({ ...consumption, consumptionPerApartmentKwh: Number(e.target.value) })} className={inputClass} />
+                      <input
+                        type="number"
+                        value={consumption.consumptionPerApartmentKwh}
+                        onChange={(e) =>
+                          setConsumption({
+                            ...consumption,
+                            consumptionPerApartmentKwh: Number(e.target.value),
+                          })
+                        }
+                        className={inputClass}
+                      />
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 pt-2 w-full">
                     <label className="flex items-center gap-2 cursor-pointer flex-1">
                       <div className="relative">
-                        <input type="checkbox" className="sr-only" checked={consumption.hasHeatPump} onChange={(e) => setConsumption({ ...consumption, hasHeatPump: e.target.checked })} />
-                        <div className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasHeatPump ? 'bg-blue-500' : 'bg-slate-300'}`}></div>
-                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasHeatPump ? 'transform translate-x-4' : ''}`}></div>
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={consumption.hasHeatPump}
+                          onChange={(e) =>
+                            setConsumption({ ...consumption, hasHeatPump: e.target.checked })
+                          }
+                        />
+                        <div
+                          className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasHeatPump ? 'bg-blue-500' : 'bg-slate-300'}`}
+                        ></div>
+                        <div
+                          className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasHeatPump ? 'transform translate-x-4' : ''}`}
+                        ></div>
                       </div>
                       <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
                         {t.labelHeatPump}
@@ -248,7 +336,17 @@ export const Configurator: React.FC = () => {
 
                     {consumption.hasHeatPump && (
                       <div className="flex-1 flex items-center gap-2">
-                        <input type="number" value={consumption.heatPumpConsumptionKwh} onChange={(e) => setConsumption({ ...consumption, heatPumpConsumptionKwh: Number(e.target.value) })} className="w-24 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        <input
+                          type="number"
+                          value={consumption.heatPumpConsumptionKwh}
+                          onChange={(e) =>
+                            setConsumption({
+                              ...consumption,
+                              heatPumpConsumptionKwh: Number(e.target.value),
+                            })
+                          }
+                          className="w-24 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
+                        />
                         <span className="text-sm text-slate-600">kWh</span>
                       </div>
                     )}
@@ -257,9 +355,20 @@ export const Configurator: React.FC = () => {
                   <div className="flex flex-col gap-3 pt-2 w-full">
                     <label className="flex items-center gap-2 cursor-pointer w-full">
                       <div className="relative">
-                        <input type="checkbox" className="sr-only" checked={consumption.hasEvCharging} onChange={(e) => setConsumption({ ...consumption, hasEvCharging: e.target.checked })} />
-                        <div className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasEvCharging ? 'bg-blue-500' : 'bg-slate-300'}`}></div>
-                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasEvCharging ? 'transform translate-x-4' : ''}`}></div>
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={consumption.hasEvCharging}
+                          onChange={(e) =>
+                            setConsumption({ ...consumption, hasEvCharging: e.target.checked })
+                          }
+                        />
+                        <div
+                          className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasEvCharging ? 'bg-blue-500' : 'bg-slate-300'}`}
+                        ></div>
+                        <div
+                          className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasEvCharging ? 'transform translate-x-4' : ''}`}
+                        ></div>
                       </div>
                       <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
                         {t.labelEV}
@@ -270,18 +379,41 @@ export const Configurator: React.FC = () => {
                     {consumption.hasEvCharging && (
                       <div className="pl-12 grid grid-cols-2 gap-4 w-full">
                         <div>
-                          <label className="block text-xs text-slate-500 mb-1">{t.labelEVCount}</label>
-                          <input type="number" value={consumption.evChargingPoints} onChange={(e) => setConsumption({ ...consumption, evChargingPoints: Number(e.target.value) })} className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                          <label className="block text-xs text-slate-500 mb-1">
+                            {t.labelEVCount}
+                          </label>
+                          <input
+                            type="number"
+                            value={consumption.evChargingPoints}
+                            onChange={(e) =>
+                              setConsumption({
+                                ...consumption,
+                                evChargingPoints: Number(e.target.value),
+                              })
+                            }
+                            className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
+                          />
                         </div>
                         <div>
-                          <label className="block text-xs text-slate-500 mb-1">{t.labelEVConsumptionPerPointKwh}</label>
-                          <input type="number" value={consumption.evChargingConsumptionPerPointKwh} onChange={(e) => setConsumption({ ...consumption, evChargingConsumptionPerPointKwh: Number(e.target.value) })} className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                          <label className="block text-xs text-slate-500 mb-1">
+                            {t.labelEVConsumptionPerPointKwh}
+                          </label>
+                          <input
+                            type="number"
+                            value={consumption.evChargingConsumptionPerPointKwh}
+                            onChange={(e) =>
+                              setConsumption({
+                                ...consumption,
+                                evChargingConsumptionPerPointKwh: Number(e.target.value),
+                              })
+                            }
+                            className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
+                          />
                         </div>
                       </div>
                     )}
                   </div>
                 </div>
-
               </div>
             </div>
           )}
@@ -295,20 +427,35 @@ export const Configurator: React.FC = () => {
               </h2>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
                 {/* Model selection */}
                 <div className="col-span-1 lg:col-span-2 bg-slate-50 p-4 rounded-xl border border-slate-200">
                   <label className="flex items-center text-sm font-semibold text-slate-800 mb-3">
                     {t.sectionModel}
                   </label>
                   <div className="flex gap-4">
-                    <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${economics.model === 'Mieterstrom' ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}>
-                      <input type="radio" name="model" className="sr-only" checked={economics.model === 'Mieterstrom'} onChange={() => setEconomics({ ...economics, model: 'Mieterstrom' })} />
+                    <label
+                      className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${economics.model === 'Mieterstrom' ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                    >
+                      <input
+                        type="radio"
+                        name="model"
+                        className="sr-only"
+                        checked={economics.model === 'Mieterstrom'}
+                        onChange={() => setEconomics({ ...economics, model: 'Mieterstrom' })}
+                      />
                       {t.modelMieterstrom}
                       <Tooltip text={t.tooltipModelMieterstrom} />
                     </label>
-                    <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${economics.model === 'GGV' ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}>
-                      <input type="radio" name="model" className="sr-only" checked={economics.model === 'GGV'} onChange={() => setEconomics({ ...economics, model: 'GGV' })} />
+                    <label
+                      className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${economics.model === 'GGV' ? 'border-blue-500 bg-blue-50 text-blue-700 font-medium' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                    >
+                      <input
+                        type="radio"
+                        name="model"
+                        className="sr-only"
+                        checked={economics.model === 'GGV'}
+                        onChange={() => setEconomics({ ...economics, model: 'GGV' })}
+                      />
                       {t.modelGGV}
                       <Tooltip text={t.tooltipModelGGV} />
                     </label>
@@ -317,7 +464,9 @@ export const Configurator: React.FC = () => {
 
                 {/* Tariffs */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">{t.sectionTariffs}</h3>
+                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">
+                    {t.sectionTariffs}
+                  </h3>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -325,14 +474,33 @@ export const Configurator: React.FC = () => {
                         {t.labelTenantRate}
                         <Tooltip text={t.tooltipTenantRate} />
                       </label>
-                      <input type="number" step="0.1" value={economics.tenantElectricityRate} onChange={(e) => setEconomics({ ...economics, tenantElectricityRate: Number(e.target.value) })} className={inputClassEco} />
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={economics.tenantElectricityRate}
+                        onChange={(e) =>
+                          setEconomics({
+                            ...economics,
+                            tenantElectricityRate: Number(e.target.value),
+                          })
+                        }
+                        className={inputClassEco}
+                      />
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelFeedIn}
                         <Tooltip text={t.tooltipFeedIn} />
                       </label>
-                      <input type="number" step="0.1" value={economics.feedInTariff} onChange={(e) => setEconomics({ ...economics, feedInTariff: Number(e.target.value) })} className={inputClassEco} />
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={economics.feedInTariff}
+                        onChange={(e) =>
+                          setEconomics({ ...economics, feedInTariff: Number(e.target.value) })
+                        }
+                        className={inputClassEco}
+                      />
                     </div>
                   </div>
 
@@ -343,14 +511,33 @@ export const Configurator: React.FC = () => {
                           {t.labelBaseFee}
                           <Tooltip text={t.tooltipBaseFee} />
                         </label>
-                        <input type="number" step="0.1" value={economics.baseFeePerMonth} onChange={(e) => setEconomics({ ...economics, baseFeePerMonth: Number(e.target.value) })} className={inputClassEco} />
+                        <input
+                          type="number"
+                          step="0.1"
+                          value={economics.baseFeePerMonth}
+                          onChange={(e) =>
+                            setEconomics({ ...economics, baseFeePerMonth: Number(e.target.value) })
+                          }
+                          className={inputClassEco}
+                        />
                       </div>
                       <div>
                         <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                           {t.labelSubsidy}
                           <Tooltip text={t.tooltipSubsidy} />
                         </label>
-                        <input type="number" step="0.1" value={economics.tenantElectricitySubsidy} onChange={(e) => setEconomics({ ...economics, tenantElectricitySubsidy: Number(e.target.value) })} className={inputClassEco} />
+                        <input
+                          type="number"
+                          step="0.1"
+                          value={economics.tenantElectricitySubsidy}
+                          onChange={(e) =>
+                            setEconomics({
+                              ...economics,
+                              tenantElectricitySubsidy: Number(e.target.value),
+                            })
+                          }
+                          className={inputClassEco}
+                        />
                       </div>
                     </div>
                   )}
@@ -360,13 +547,23 @@ export const Configurator: React.FC = () => {
                       {t.labelGridRate}
                       <Tooltip text={t.tooltipGridRate} />
                     </label>
-                    <input type="number" step="0.1" value={economics.gridElectricityRate} onChange={(e) => setEconomics({ ...economics, gridElectricityRate: Number(e.target.value) })} className={inputClassEco} />
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={economics.gridElectricityRate}
+                      onChange={(e) =>
+                        setEconomics({ ...economics, gridElectricityRate: Number(e.target.value) })
+                      }
+                      className={inputClassEco}
+                    />
                   </div>
                 </div>
 
                 {/* Financing */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">{t.sectionFinancing}</h3>
+                  <h3 className="text-lg font-semibold text-slate-700 border-b pb-2">
+                    {t.sectionFinancing}
+                  </h3>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -374,14 +571,30 @@ export const Configurator: React.FC = () => {
                         {t.labelCapex}
                         <Tooltip text={t.tooltipCapex} />
                       </label>
-                      <input type="number" step="500" value={economics.capex} onChange={(e) => setEconomics({ ...economics, capex: Number(e.target.value) })} className={inputClassEco} />
+                      <input
+                        type="number"
+                        step="500"
+                        value={economics.capex}
+                        onChange={(e) =>
+                          setEconomics({ ...economics, capex: Number(e.target.value) })
+                        }
+                        className={inputClassEco}
+                      />
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelOpex}
                         <Tooltip text={t.tooltipOpex} />
                       </label>
-                      <input type="number" step="50" value={economics.opexPerYear} onChange={(e) => setEconomics({ ...economics, opexPerYear: Number(e.target.value) })} className={inputClassEco} />
+                      <input
+                        type="number"
+                        step="50"
+                        value={economics.opexPerYear}
+                        onChange={(e) =>
+                          setEconomics({ ...economics, opexPerYear: Number(e.target.value) })
+                        }
+                        className={inputClassEco}
+                      />
                     </div>
                   </div>
 
@@ -391,25 +604,48 @@ export const Configurator: React.FC = () => {
                         {t.labelLoanAmount}
                         <Tooltip text={t.tooltipLoanAmount} />
                       </label>
-                      <input type="number" step="1000" value={financing.loanAmount} onChange={(e) => setFinancing({ ...financing, loanAmount: Number(e.target.value) })} className={inputClassEco} />
+                      <input
+                        type="number"
+                        step="1000"
+                        value={financing.loanAmount}
+                        onChange={(e) =>
+                          setFinancing({ ...financing, loanAmount: Number(e.target.value) })
+                        }
+                        className={inputClassEco}
+                      />
                     </div>
                     <div className="col-span-1">
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelInterestRate}
                         <Tooltip text={t.tooltipInterestRate} />
                       </label>
-                      <input type="number" step="0.1" value={financing.interestRate} onChange={(e) => setFinancing({ ...financing, interestRate: Number(e.target.value) })} className={inputClassEco} />
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={financing.interestRate}
+                        onChange={(e) =>
+                          setFinancing({ ...financing, interestRate: Number(e.target.value) })
+                        }
+                        className={inputClassEco}
+                      />
                     </div>
                     <div className="col-span-1">
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelLoanTerm}
                         <Tooltip text={t.tooltipLoanTerm} />
                       </label>
-                      <input type="number" step="1" value={financing.loanTermYears} onChange={(e) => setFinancing({ ...financing, loanTermYears: Number(e.target.value) })} className={inputClassEco} />
+                      <input
+                        type="number"
+                        step="1"
+                        value={financing.loanTermYears}
+                        onChange={(e) =>
+                          setFinancing({ ...financing, loanTermYears: Number(e.target.value) })
+                        }
+                        className={inputClassEco}
+                      />
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           )}
@@ -425,26 +661,53 @@ export const Configurator: React.FC = () => {
               {ecoResults.cashflowPlan.length > 0 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center">
-                    <h3 className="font-semibold text-slate-700 mb-4 text-center">{t.chartEnergyTitle}</h3>
+                    <h3 className="font-semibold text-slate-700 mb-4 text-center">
+                      {t.chartEnergyTitle}
+                    </h3>
                     <EnergyMixChart energy={energy} />
                     <div className="mt-4 text-sm text-slate-600 space-y-2 w-full px-4">
-                      <div className="flex justify-between border-b border-slate-200 pb-1"><span>{t.labelPvYield}</span> <span className="font-medium">{energy.totalYieldKwh.toFixed(0)} kWh</span></div>
-                      <div className="flex justify-between border-b border-slate-200 pb-1"><span>{t.labelTotalConsumption}</span> <span className="font-medium">{energy.totalConsumptionKwh.toFixed(0)} kWh</span></div>
-                      <div className="flex justify-between pb-1"><span>{t.labelGridExport}</span> <span className="font-medium text-slate-500">{energy.gridExportKwh.toFixed(0)} kWh</span></div>
+                      <div className="flex justify-between border-b border-slate-200 pb-1">
+                        <span>{t.labelPvYield}</span>{' '}
+                        <span className="font-medium">{energy.totalYieldKwh.toFixed(0)} kWh</span>
+                      </div>
+                      <div className="flex justify-between border-b border-slate-200 pb-1">
+                        <span>{t.labelTotalConsumption}</span>{' '}
+                        <span className="font-medium">
+                          {energy.totalConsumptionKwh.toFixed(0)} kWh
+                        </span>
+                      </div>
+                      <div className="flex justify-between pb-1">
+                        <span>{t.labelGridExport}</span>{' '}
+                        <span className="font-medium text-slate-500">
+                          {energy.gridExportKwh.toFixed(0)} kWh
+                        </span>
+                      </div>
                     </div>
                   </div>
 
                   <div className="lg:col-span-2">
                     <h3 className="font-semibold text-slate-700 mb-4 ml-12">
-                      {t.chartCashflowTitle.replace('{years}', String(economics.calculationPeriodYears))}
+                      {t.chartCashflowTitle.replace(
+                        '{years}',
+                        String(economics.calculationPeriodYears)
+                      )}
                     </h3>
-                    <CashflowChart data={ecoResults.cashflowPlan} onBarClick={(idx: number) => setSelectedYearIndex(idx)} />
+                    <CashflowChart
+                      data={ecoResults.cashflowPlan}
+                      onBarClick={(idx: number) => setSelectedYearIndex(idx)}
+                    />
 
                     {ecoResults.cashflowPlan.length > 0 && (
                       <div className="mt-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm lg:mx-12">
                         <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
                           <h4 className="font-semibold text-slate-700">
-                            {t.tableTitle.replace('{year}', String(ecoResults.cashflowPlan[selectedYearIndex]?.year ?? selectedYearIndex + 1))}
+                            {t.tableTitle.replace(
+                              '{year}',
+                              String(
+                                ecoResults.cashflowPlan[selectedYearIndex]?.year ??
+                                  selectedYearIndex + 1
+                              )
+                            )}
                           </h4>
                         </div>
                         <div className="overflow-x-auto">
@@ -452,45 +715,92 @@ export const Configurator: React.FC = () => {
                             <thead className="bg-slate-50 text-slate-500 border-b border-slate-200">
                               <tr>
                                 <th className="px-4 py-2 font-medium">{t.tablePosition}</th>
-                                <th className="px-4 py-2 font-medium text-right">{t.tableAmount}</th>
+                                <th className="px-4 py-2 font-medium text-right">
+                                  {t.tableAmount}
+                                </th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr className="border-b border-slate-100">
-                                <td className="px-4 py-2 font-medium text-slate-700">{t.tableRevenue}</td>
-                                <td className="px-4 py-2 text-right text-blue-600 font-medium">{ecoResults.cashflowPlan[selectedYearIndex]?.totalRevenue.toFixed(2)}</td>
+                                <td className="px-4 py-2 font-medium text-slate-700">
+                                  {t.tableRevenue}
+                                </td>
+                                <td className="px-4 py-2 text-right text-blue-600 font-medium">
+                                  {ecoResults.cashflowPlan[selectedYearIndex]?.totalRevenue.toFixed(
+                                    2
+                                  )}
+                                </td>
                               </tr>
                               {economics.model === 'Mieterstrom' && (
                                 <>
                                   <tr className="border-b border-slate-100 bg-slate-50/50">
-                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">{t.tableMieterstrom}</td>
-                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueTenantElectricity.toFixed(2)}</td>
+                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">
+                                      {t.tableMieterstrom}
+                                    </td>
+                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">
+                                      {ecoResults.cashflowPlan[
+                                        selectedYearIndex
+                                      ]?.revenueTenantElectricity.toFixed(2)}
+                                    </td>
                                   </tr>
                                   <tr className="border-b border-slate-100 bg-slate-50/50">
-                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">{t.tableBaseFee}</td>
-                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueBaseFee.toFixed(2)}</td>
+                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">
+                                      {t.tableBaseFee}
+                                    </td>
+                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">
+                                      {ecoResults.cashflowPlan[
+                                        selectedYearIndex
+                                      ]?.revenueBaseFee.toFixed(2)}
+                                    </td>
                                   </tr>
                                   <tr className="border-b border-slate-100 bg-slate-50/50">
-                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">{t.tableSubsidy}</td>
-                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueSubsidy.toFixed(2)}</td>
+                                    <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">
+                                      {t.tableSubsidy}
+                                    </td>
+                                    <td className="px-4 py-1.5 text-right text-slate-500 text-xs">
+                                      {ecoResults.cashflowPlan[
+                                        selectedYearIndex
+                                      ]?.revenueSubsidy.toFixed(2)}
+                                    </td>
                                   </tr>
                                 </>
                               )}
                               <tr className="border-b border-slate-100 bg-slate-50/50">
-                                <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">{t.tableFeedIn}</td>
-                                <td className="px-4 py-1.5 text-right text-slate-500 text-xs">{ecoResults.cashflowPlan[selectedYearIndex]?.revenueFeedIn.toFixed(2)}</td>
+                                <td className="px-4 py-1.5 pl-8 text-slate-500 text-xs">
+                                  {t.tableFeedIn}
+                                </td>
+                                <td className="px-4 py-1.5 text-right text-slate-500 text-xs">
+                                  {ecoResults.cashflowPlan[
+                                    selectedYearIndex
+                                  ]?.revenueFeedIn.toFixed(2)}
+                                </td>
                               </tr>
                               <tr className="border-b border-slate-100">
-                                <td className="px-4 py-2 font-medium text-slate-700">{t.tableOpex}</td>
-                                <td className="px-4 py-2 text-right text-slate-600">-{ecoResults.cashflowPlan[selectedYearIndex]?.opex.toFixed(2)}</td>
+                                <td className="px-4 py-2 font-medium text-slate-700">
+                                  {t.tableOpex}
+                                </td>
+                                <td className="px-4 py-2 text-right text-slate-600">
+                                  -{ecoResults.cashflowPlan[selectedYearIndex]?.opex.toFixed(2)}
+                                </td>
                               </tr>
                               <tr className="border-b border-slate-100">
-                                <td className="px-4 py-2 font-medium text-slate-700">{t.tableAnnuity}</td>
-                                <td className="px-4 py-2 text-right text-slate-600">-{ecoResults.cashflowPlan[selectedYearIndex]?.loanInstallment.toFixed(2)}</td>
+                                <td className="px-4 py-2 font-medium text-slate-700">
+                                  {t.tableAnnuity}
+                                </td>
+                                <td className="px-4 py-2 text-right text-slate-600">
+                                  -
+                                  {ecoResults.cashflowPlan[
+                                    selectedYearIndex
+                                  ]?.loanInstallment.toFixed(2)}
+                                </td>
                               </tr>
                               <tr className="bg-blue-50">
-                                <td className="px-4 py-3 font-semibold text-slate-800">{t.tableCashflow}</td>
-                                <td className="px-4 py-3 text-right font-bold text-slate-800">{ecoResults.cashflowPlan[selectedYearIndex]?.cashflow.toFixed(2)}</td>
+                                <td className="px-4 py-3 font-semibold text-slate-800">
+                                  {t.tableCashflow}
+                                </td>
+                                <td className="px-4 py-3 text-right font-bold text-slate-800">
+                                  {ecoResults.cashflowPlan[selectedYearIndex]?.cashflow.toFixed(2)}
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -504,10 +814,8 @@ export const Configurator: React.FC = () => {
                   {t.noData}
                 </div>
               )}
-
             </div>
           )}
-
         </div>
       </div>
     </div>

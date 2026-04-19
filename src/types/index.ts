@@ -1,66 +1,66 @@
 export interface SystemParams {
-  address: string;               // Adresse zur Geokodierung
-  locationLat: number;           // Breitengrad (PVGIS)
-  locationLon: number;           // Längengrad (PVGIS)
-  inclination: number;           // Neigungswinkel in Grad (0-90)
-  azimuth: number;               // Ausrichtung in Grad (0=Süd, -90=Ost, 90=West)
-  systemLoss: number;            // Systemverluste in % (z.B. 14)
-  pvCapacityKwp: number;         // PV-Leistung in kWp
-  hasBattery: boolean;           // Batteriespeicher vorhanden?
-  batteryCapacityKwh: number;    // Kapazität in kWh
+  address: string; // Adresse zur Geokodierung
+  locationLat: number; // Breitengrad (PVGIS)
+  locationLon: number; // Längengrad (PVGIS)
+  inclination: number; // Neigungswinkel in Grad (0-90)
+  azimuth: number; // Ausrichtung in Grad (0=Süd, -90=Ost, 90=West)
+  systemLoss: number; // Systemverluste in % (z.B. 14)
+  pvCapacityKwp: number; // PV-Leistung in kWp
+  hasBattery: boolean; // Batteriespeicher vorhanden?
+  batteryCapacityKwh: number; // Kapazität in kWh
 }
 
 export interface ConsumptionParams {
-  apartments: number;                 // Anzahl der WE
+  apartments: number; // Anzahl der WE
   consumptionPerApartmentKwh: number; // kWh pro Jahr/WE
-  hasHeatPump: boolean;               // Wärmepumpe vorhanden?
-  heatPumpConsumptionKwh: number;     // Wärmepumpen-Bedarf kWh
-  hasEvCharging: boolean;             // E-Mobilität vorhanden?
-  evChargingPoints: number;           // Anzahl Ladepunkte
+  hasHeatPump: boolean; // Wärmepumpe vorhanden?
+  heatPumpConsumptionKwh: number; // Wärmepumpen-Bedarf kWh
+  hasEvCharging: boolean; // E-Mobilität vorhanden?
+  evChargingPoints: number; // Anzahl Ladepunkte
   evChargingConsumptionPerPointKwh: number; // Energiebedarf pro Ladepunkt in kWh
-  generalConsumptionKwh: number;      // Allgemeinstrom kWh
+  generalConsumptionKwh: number; // Allgemeinstrom kWh
 }
 
 export interface EconomicParams {
   model: 'Mieterstrom' | 'GGV';
-  tenantElectricityRate: number;    // Verkaufs-Tarif an Mieter (ct/kWh)
-  gridElectricityRate: number;      // Referenzpreis Grundversorger (ct/kWh)
-  feedInTariff: number;             // EEG-Vergütung für Einspeisung (ct/kWh)
+  tenantElectricityRate: number; // Verkaufs-Tarif an Mieter (ct/kWh)
+  gridElectricityRate: number; // Referenzpreis Grundversorger (ct/kWh)
+  feedInTariff: number; // EEG-Vergütung für Einspeisung (ct/kWh)
   tenantElectricitySubsidy: number; // Mieterstromzuschlag (variabel) (ct/kWh)
-  baseFeePerMonth: number;          // Grundgebühr pro Monat/WE (€)
-  capex: number;                    // Investitionskosten (€)
-  opexPerYear: number;              // Jährliche Betriebskosten (€)
-  calculationPeriodYears: number;   // Betrachtungszeitraum in Jahren (z.B. 20)
+  baseFeePerMonth: number; // Grundgebühr pro Monat/WE (€)
+  capex: number; // Investitionskosten (€)
+  opexPerYear: number; // Jährliche Betriebskosten (€)
+  calculationPeriodYears: number; // Betrachtungszeitraum in Jahren (z.B. 20)
 }
 
 export interface FinancingParams {
-  loanAmount: number;        // €
-  loanTermYears: number;     // Jahre
-  interestRate: number;      // % p.a.
+  loanAmount: number; // €
+  loanTermYears: number; // Jahre
+  interestRate: number; // % p.a.
 }
 
 export interface SimulationInputs {
   system: SystemParams;
-  consumption:ConsumptionParams;
+  consumption: ConsumptionParams;
   economics: EconomicParams;
   financing: FinancingParams;
 }
 
 export interface EnergyResults {
-  totalYieldKwh: number;         // Erzeugte Energie gesamt via PVGIS
-  selfConsumptionKwh: number;    // Eigenverbrauch (PV + Batterie)
-  gridSupplyKwh: number;         // Netzbezug
-  gridExportKwh: number;         // Netzeinspeisung
-  autarkyRate: number;           // Autarkiegrad (%)
-  selfConsumptionRate: number;   // Eigenverbrauchsquote (%)
-  totalConsumptionKwh: number;   // Gesamtverbrauch
+  totalYieldKwh: number; // Erzeugte Energie gesamt via PVGIS
+  selfConsumptionKwh: number; // Eigenverbrauch (PV + Batterie)
+  gridSupplyKwh: number; // Netzbezug
+  gridExportKwh: number; // Netzeinspeisung
+  autarkyRate: number; // Autarkiegrad (%)
+  selfConsumptionRate: number; // Eigenverbrauchsquote (%)
+  totalConsumptionKwh: number; // Gesamtverbrauch
   pvDirectConsumptionKwh: number; // Direktverbrauch PV
-  batteryDischargeKwh: number;   // Batterie-Entladung
+  batteryDischargeKwh: number; // Batterie-Entladung
 }
 
 export interface YearlyCashflow {
   year: number;
-  revenueTenantElectricity: number; 
+  revenueTenantElectricity: number;
   revenueFeedIn: number;
   revenueBaseFee: number;
   revenueSubsidy: number;
@@ -76,8 +76,8 @@ export interface YearlyCashflow {
 }
 
 export interface EconomicResults {
-  lcoe: number;             // Stromgestehungskosten (€/kWh)
+  lcoe: number; // Stromgestehungskosten (€/kWh)
   amortizationYears: number | null; // Amortisationszeit in Jahren
-  roi: number;             // Return on Investment in %
+  roi: number; // Return on Investment in %
   cashflowPlan: YearlyCashflow[];
 }

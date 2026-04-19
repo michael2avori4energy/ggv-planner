@@ -31,29 +31,36 @@ export const translations = {
     labelAddress: 'Standort / Adresse',
     placeholderAddress: 'z.B. Berlin, Deutschland',
     addressCoords: 'Breite: {lat}, Länge: {lon}',
-    tooltipAddress: 'Geben Sie eine Adresse ein und wählen Sie einen Vorschlag, das System liest die genauen GPS-Koordinaten für die PVGIS-Berechnung aus.',
+    tooltipAddress:
+      'Geben Sie eine Adresse ein und wählen Sie einen Vorschlag, das System liest die genauen GPS-Koordinaten für die PVGIS-Berechnung aus.',
 
     labelPvCapacity: 'PV-Leistung (kWp)',
-    tooltipPvCapacity: 'Die installierte Peakleistung der PV-Anlage in Kilowatt-Peak. Ein typisches Mehrfamilienhaus hat 30–150 kWp.',
+    tooltipPvCapacity:
+      'Die installierte Peakleistung der PV-Anlage in Kilowatt-Peak. Ein typisches Mehrfamilienhaus hat 30–150 kWp.',
 
     labelBattery: 'Batteriespeicher',
     labelBatteryCapacity: 'kWh',
-    tooltipBattery: 'Ein Batteriespeicher erhöht die Eigenverbrauchsquote erheblich, da überschüssiger PV-Strom gespeichert und nachts genutzt werden kann.',
+    tooltipBattery:
+      'Ein Batteriespeicher erhöht die Eigenverbrauchsquote erheblich, da überschüssiger PV-Strom gespeichert und nachts genutzt werden kann.',
 
     labelApartments: 'Wohneinheiten',
-    tooltipApartments: 'Anzahl der angeschlossenen Mietparteien. Je mehr Wohneinheiten, desto größer der Gesamtstromverbrauch.',
+    tooltipApartments:
+      'Anzahl der angeschlossenen Mietparteien. Je mehr Wohneinheiten, desto größer der Gesamtstromverbrauch.',
 
     labelConsumptionPerApartment: 'Verbrauch/WE (kWh)',
-    tooltipConsumptionPerApartment: 'Durchschnittlicher Jahresstromverbrauch pro Wohneinheit. Typisch: 2.000–3.500 kWh/a für Haushalte ohne Wärmenutzung.',
+    tooltipConsumptionPerApartment:
+      'Durchschnittlicher Jahresstromverbrauch pro Wohneinheit. Typisch: 2.000–3.500 kWh/a für Haushalte ohne Wärmenutzung.',
 
     labelHeatPump: 'Wärmepumpe Gesamtverbrauch (kWh/a)',
-    tooltipHeatPump: 'Gesamter Jahresstromverbrauch aller Wärmepumpen im Gebäude. Eine Luft-Wasser-WP benötigt ca. 3.000–8.000 kWh/a.',
+    tooltipHeatPump:
+      'Gesamter Jahresstromverbrauch aller Wärmepumpen im Gebäude. Eine Luft-Wasser-WP benötigt ca. 3.000–8.000 kWh/a.',
 
     labelEV: 'E-Mobilität (Wallboxen) (kWh/a)',
     labelEVCount: 'Anzahl Wallboxen',
     labelEVConsumptionPerPointKwh: 'jährl. kWh pro Ladepunkt',
 
-    tooltipEV: 'Gesamter Jahresstromverbrauch für das Laden von Elektrofahrzeugen. Ca. 2.000–4.000 kWh/a pro Fahrzeug.',
+    tooltipEV:
+      'Gesamter Jahresstromverbrauch für das Laden von Elektrofahrzeugen. Ca. 2.000–4.000 kWh/a pro Fahrzeug.',
 
     // Tab 2: Economic
     tab2Title: 'Wirtschaftliche Parameter',
@@ -64,31 +71,40 @@ export const translations = {
     sectionFinancing: 'Investition & Finanzierung',
 
     labelTenantRate: 'Verkaufspreis Mieter (ct)',
-    tooltipTenantRate: 'Der ct/kWh-Preis, den der Betreiber an die Mieter für den Mieterstrom berechnet. Muss mindestens 10% unter dem lokalen Grundversorger-Tarif liegen.',
+    tooltipTenantRate:
+      'Der ct/kWh-Preis, den der Betreiber an die Mieter für den Mieterstrom berechnet. Muss mindestens 10% unter dem lokalen Grundversorger-Tarif liegen.',
 
     labelFeedIn: 'Einspeisevergütung (ct)',
-    tooltipFeedIn: 'EEG-Einspeisevergütung für ins Netz eingespeisten Überschussstrom. Dieser Wert wird regelmäßig von der Bundesnetzagentur angepasst.',
+    tooltipFeedIn:
+      'EEG-Einspeisevergütung für ins Netz eingespeisten Überschussstrom. Dieser Wert wird regelmäßig von der Bundesnetzagentur angepasst.',
 
     labelBaseFee: 'Messentgelt/Grundgebühr (€/Mo)',
-    tooltipBaseFee: 'Monatliche Grundgebühr pro Wohneinheit für die Bereitstellung des Messdienstleistungs- und Abrechnungsservice. Nur im Mieterstrom-Modell.',
+    tooltipBaseFee:
+      'Monatliche Grundgebühr pro Wohneinheit für die Bereitstellung des Messdienstleistungs- und Abrechnungsservice. Nur im Mieterstrom-Modell.',
 
     labelSubsidy: 'Mieterstromzuschlag (ct)',
-    tooltipSubsidy: 'Staatliche Förderung pro kWh an Mieter geliefertem Strom (gemäß § 21 EEG). Wird regelmäßig angepasst und variiert je nach Anlagengröße.',
+    tooltipSubsidy:
+      'Staatliche Förderung pro kWh an Mieter geliefertem Strom (gemäß § 21 EEG). Wird regelmäßig angepasst und variiert je nach Anlagengröße.',
 
     labelGridRate: 'Referenzpreis Netz (ct/kWh)',
-    tooltipGridRate: 'Lokaler Grundversorger-Tarif als Referenz. Wird u.a. zur Berechnung der Mietereinsparungen verwendet.',
+    tooltipGridRate:
+      'Lokaler Grundversorger-Tarif als Referenz. Wird u.a. zur Berechnung der Mietereinsparungen verwendet.',
 
     labelCapex: 'CAPEX (€ netto)',
-    tooltipCapex: 'Gesamte Investitionskosten der Anlage (Netto, ohne MwSt.). Inkl. Module, Wechselrichter, Montage, Elektrik und ggf. Speicher.',
+    tooltipCapex:
+      'Gesamte Investitionskosten der Anlage (Netto, ohne MwSt.). Inkl. Module, Wechselrichter, Montage, Elektrik und ggf. Speicher.',
 
     labelOpex: 'OPEX (€ pro Jahr)',
-    tooltipOpex: 'Jährliche Betriebskosten: Wartung, Versicherung, Zählerabrechnung, Softwaregebühren, etc. Typisch: 1–2% des CAPEX p.a.',
+    tooltipOpex:
+      'Jährliche Betriebskosten: Wartung, Versicherung, Zählerabrechnung, Softwaregebühren, etc. Typisch: 1–2% des CAPEX p.a.',
 
     labelLoanAmount: 'Kreditbetrag (€)',
-    tooltipLoanAmount: 'Der fremdfinanzierte Anteil der Investitionskosten. Der Rest ist das aufzubringende Eigenkapital.',
+    tooltipLoanAmount:
+      'Der fremdfinanzierte Anteil der Investitionskosten. Der Rest ist das aufzubringende Eigenkapital.',
 
     labelInterestRate: 'Zins (% p.a.)',
-    tooltipInterestRate: 'Jährlicher Zinssatz des Investitionsdarlehens. Für Projekte dieser Art gibt es häufig günstige KfW-Förderprogramme.',
+    tooltipInterestRate:
+      'Jährlicher Zinssatz des Investitionsdarlehens. Für Projekte dieser Art gibt es häufig günstige KfW-Förderprogramme.',
 
     labelLoanTerm: 'Laufzeit (J)',
     tooltipLoanTerm: 'Tilgungsdauer des Darlehens in Jahren. Typisch 10–20 Jahre für Solaranlagen.',
@@ -116,8 +132,10 @@ export const translations = {
     tableCashflow: 'Cashflow vor Steuern',
 
     // Tooltip model hint
-    tooltipModelMieterstrom: 'Im klassischen Mieterstrom erhält der Vermieter/Betreiber den Mieterstromzuschlag und der Mieter bekommt einen günstigeren Tarif als vom Grundversorger. Es gilt ein gesetzlicher Deckel.',
-    tooltipModelGGV: 'Bei GGV (Gemeinschaftliche Gebäudeversorgung) nach §42b EnWG können Mieter direkt Strom aus der PV-Anlage beziehen, ohne dass der Betreiber ein Versorgungsunternehmen sein muss.',
+    tooltipModelMieterstrom:
+      'Im klassischen Mieterstrom erhält der Vermieter/Betreiber den Mieterstromzuschlag und der Mieter bekommt einen günstigeren Tarif als vom Grundversorger. Es gilt ein gesetzlicher Deckel.',
+    tooltipModelGGV:
+      'Bei GGV (Gemeinschaftliche Gebäudeversorgung) nach §42b EnWG können Mieter direkt Strom aus der PV-Anlage beziehen, ohne dass der Betreiber ein Versorgungsunternehmen sein muss.',
   },
 
   en: {
@@ -150,28 +168,35 @@ export const translations = {
     labelAddress: 'Location / Address',
     placeholderAddress: 'e.g. Berlin, Germany',
     addressCoords: 'Lat: {lat}, Lon: {lon}',
-    tooltipAddress: 'Enter an address and select a suggestion. The system will read the exact GPS coordinates for the PVGIS yield calculation.',
+    tooltipAddress:
+      'Enter an address and select a suggestion. The system will read the exact GPS coordinates for the PVGIS yield calculation.',
 
     labelPvCapacity: 'PV Capacity (kWp)',
-    tooltipPvCapacity: 'Installed peak power of the PV system in kilowatt-peak. A typical multi-family building has 30–150 kWp.',
+    tooltipPvCapacity:
+      'Installed peak power of the PV system in kilowatt-peak. A typical multi-family building has 30–150 kWp.',
 
     labelBattery: 'Battery Storage',
     labelBatteryCapacity: 'kWh',
-    tooltipBattery: 'A battery storage significantly increases the self-consumption rate, as surplus PV energy can be stored and used at night.',
+    tooltipBattery:
+      'A battery storage significantly increases the self-consumption rate, as surplus PV energy can be stored and used at night.',
 
     labelApartments: 'Apartments',
-    tooltipApartments: 'Number of connected tenant units. More apartments means greater total electricity consumption.',
+    tooltipApartments:
+      'Number of connected tenant units. More apartments means greater total electricity consumption.',
 
     labelConsumptionPerApartment: 'Consumption/unit (kWh)',
-    tooltipConsumptionPerApartment: 'Average annual electricity consumption per apartment. Typical: 2,000–3,500 kWh/year for households without heat use.',
+    tooltipConsumptionPerApartment:
+      'Average annual electricity consumption per apartment. Typical: 2,000–3,500 kWh/year for households without heat use.',
 
     labelHeatPump: 'Heat Pump Total Consumption (kWh/a)',
-    tooltipHeatPump: 'Total annual electricity consumption of all heat pumps in the building. An air-to-water heat pump requires approx. 3,000–8,000 kWh/year.',
+    tooltipHeatPump:
+      'Total annual electricity consumption of all heat pumps in the building. An air-to-water heat pump requires approx. 3,000–8,000 kWh/year.',
 
     labelEV: 'E-Mobility (Wallboxes) (kWh/a)',
     labelEVCount: 'Number of wallboxes',
     labelEVConsumptionPerPointKwh: 'annual kWh per charging point',
-    tooltipEV: 'Total annual electricity consumption for electric vehicle charging. Approx. 2,000–4,000 kWh/year per vehicle.',
+    tooltipEV:
+      'Total annual electricity consumption for electric vehicle charging. Approx. 2,000–4,000 kWh/year per vehicle.',
 
     // Tab 2: Economic
     tab2Title: 'Economic Parameters',
@@ -182,34 +207,44 @@ export const translations = {
     sectionFinancing: 'Investment & Financing',
 
     labelTenantRate: 'Tenant Sales Price (ct)',
-    tooltipTenantRate: 'The ct/kWh price the operator charges tenants for electricity. Must be at least 10% below the local utility tariff.',
+    tooltipTenantRate:
+      'The ct/kWh price the operator charges tenants for electricity. Must be at least 10% below the local utility tariff.',
 
     labelFeedIn: 'Feed-in Tariff (ct)',
-    tooltipFeedIn: 'EEG compensation for surplus power fed into the grid. This value is regularly adjusted by the Federal Network Agency.',
+    tooltipFeedIn:
+      'EEG compensation for surplus power fed into the grid. This value is regularly adjusted by the Federal Network Agency.',
 
     labelBaseFee: 'Metering/Base Fee (€/mo)',
-    tooltipBaseFee: 'Monthly base fee per apartment for metering and billing services. Only applicable in the Tenant Electricity model.',
+    tooltipBaseFee:
+      'Monthly base fee per apartment for metering and billing services. Only applicable in the Tenant Electricity model.',
 
     labelSubsidy: 'Tenant Electricity Subsidy (ct)',
-    tooltipSubsidy: 'Government subsidy per kWh delivered to tenants (§21 EEG). Regularly adjusted and varies by system size.',
+    tooltipSubsidy:
+      'Government subsidy per kWh delivered to tenants (§21 EEG). Regularly adjusted and varies by system size.',
 
     labelGridRate: 'Grid Reference Price (ct/kWh)',
-    tooltipGridRate: 'Local utility tariff as a reference. Used to calculate tenant savings and benchmark against the system.',
+    tooltipGridRate:
+      'Local utility tariff as a reference. Used to calculate tenant savings and benchmark against the system.',
 
     labelCapex: 'CAPEX (€ net)',
-    tooltipCapex: 'Total investment costs of the system (net, excl. VAT). Including modules, inverters, mounting, electrical work, and storage if applicable.',
+    tooltipCapex:
+      'Total investment costs of the system (net, excl. VAT). Including modules, inverters, mounting, electrical work, and storage if applicable.',
 
     labelOpex: 'OPEX (€/year)',
-    tooltipOpex: 'Annual operating costs: maintenance, insurance, metering, billing, software fees, etc. Typically 1–2% of CAPEX per year.',
+    tooltipOpex:
+      'Annual operating costs: maintenance, insurance, metering, billing, software fees, etc. Typically 1–2% of CAPEX per year.',
 
     labelLoanAmount: 'Loan Amount (€)',
-    tooltipLoanAmount: 'The debt-financed portion of investment costs. The remainder is equity capital to be provided.',
+    tooltipLoanAmount:
+      'The debt-financed portion of investment costs. The remainder is equity capital to be provided.',
 
     labelInterestRate: 'Interest Rate (% p.a.)',
-    tooltipInterestRate: 'Annual interest rate of the investment loan. Favorable KfW funding programs are often available for projects like this.',
+    tooltipInterestRate:
+      'Annual interest rate of the investment loan. Favorable KfW funding programs are often available for projects like this.',
 
     labelLoanTerm: 'Term (years)',
-    tooltipLoanTerm: 'Loan repayment period in years. Typically 10–20 years for solar installations.',
+    tooltipLoanTerm:
+      'Loan repayment period in years. Typically 10–20 years for solar installations.',
 
     // Tab 3: Results
     tab3Title: 'Results & Analysis',
@@ -234,9 +269,11 @@ export const translations = {
     tableCashflow: 'Pre-tax Cashflow',
 
     // Tooltip model hint
-    tooltipModelMieterstrom: 'In classic tenant electricity, the landlord/operator receives the tenant electricity subsidy and the tenant gets a cheaper tariff than from the grid provider. A legal cap applies.',
-    tooltipModelGGV: 'With GGV (communal building supply) under §42b EnWG, tenants can direct consume electricity from the PV system without the operator needing to be a utility company.',
-  }
+    tooltipModelMieterstrom:
+      'In classic tenant electricity, the landlord/operator receives the tenant electricity subsidy and the tenant gets a cheaper tariff than from the grid provider. A legal cap applies.',
+    tooltipModelGGV:
+      'With GGV (communal building supply) under §42b EnWG, tenants can direct consume electricity from the PV system without the operator needing to be a utility company.',
+  },
 } as const;
 
 export type Translations = typeof translations.de;
