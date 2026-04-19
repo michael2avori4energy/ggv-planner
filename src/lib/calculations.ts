@@ -45,8 +45,8 @@ export function calculateEnergyYield(
   // Gesamtverbrauch berechnen
   const totalConsumptionKwh = 
     (consumption.apartments * consumption.consumptionPerApartmentKwh) +
-    consumption.heatPumpConsumptionKwh +
-    consumption.evChargingConsumptionKwh +
+    (consumption.hasHeatPump ? consumption.heatPumpConsumptionKwh : 0) +
+    (consumption.hasEvCharging ? (consumption.evChargingPoints * consumption.evChargingConsumptionPerPointKwh) : 0) +
     consumption.generalConsumptionKwh;
 
   if (totalConsumptionKwh === 0) {

@@ -50,6 +50,9 @@ export const translations = {
     tooltipHeatPump: 'Gesamter Jahresstromverbrauch aller Wärmepumpen im Gebäude. Eine Luft-Wasser-WP benötigt ca. 3.000–8.000 kWh/a.',
 
     labelEV: 'E-Mobilität (Wallboxen) (kWh/a)',
+    labelEVCount: 'Anzahl Wallboxen',
+    labelEVConsumptionPerPointKwh: 'jährl. kWh pro Ladepunkt',
+
     tooltipEV: 'Gesamter Jahresstromverbrauch für das Laden von Elektrofahrzeugen. Ca. 2.000–4.000 kWh/a pro Fahrzeug.',
 
     // Tab 2: Economic
@@ -166,6 +169,8 @@ export const translations = {
     tooltipHeatPump: 'Total annual electricity consumption of all heat pumps in the building. An air-to-water heat pump requires approx. 3,000–8,000 kWh/year.',
 
     labelEV: 'E-Mobility (Wallboxes) (kWh/a)',
+    labelEVCount: 'Number of wallboxes',
+    labelEVConsumptionPerPointKwh: 'annual kWh per charging point',
     tooltipEV: 'Total annual electricity consumption for electric vehicle charging. Approx. 2,000–4,000 kWh/year per vehicle.',
 
     // Tab 2: Economic

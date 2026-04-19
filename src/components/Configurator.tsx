@@ -33,9 +33,12 @@ export const Configurator: React.FC = () => {
 
   const [consumption, setConsumption] = useState<ConsumptionParams>({
     apartments: 10,
-    consumptionPerApartmentKwh: 2500,
+    consumptionPerApartmentKwh: 1800,
+    hasHeatPump: true,
     heatPumpConsumptionKwh: 10000,
-    evChargingConsumptionKwh: 5000,
+    hasEvCharging: true,
+    evChargingPoints: 2,
+    evChargingConsumptionPerPointKwh: 2500,
     generalConsumptionKwh: 2000
   });
 
@@ -230,20 +233,52 @@ export const Configurator: React.FC = () => {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
-                      {t.labelHeatPump}
-                      <Tooltip text={t.tooltipHeatPump} />
+                  <div className="flex items-center gap-3 pt-2 w-full">
+                    <label className="flex items-center gap-2 cursor-pointer flex-1">
+                      <div className="relative">
+                        <input type="checkbox" className="sr-only" checked={consumption.hasHeatPump} onChange={(e) => setConsumption({ ...consumption, hasHeatPump: e.target.checked })} />
+                        <div className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasHeatPump ? 'bg-blue-500' : 'bg-slate-300'}`}></div>
+                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasHeatPump ? 'transform translate-x-4' : ''}`}></div>
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
+                        {t.labelHeatPump}
+                        <Tooltip text={t.tooltipHeatPump} />
+                      </span>
                     </label>
-                    <input type="number" value={consumption.heatPumpConsumptionKwh} onChange={(e) => setConsumption({ ...consumption, heatPumpConsumptionKwh: Number(e.target.value) })} className={inputClass} />
+
+                    {consumption.hasHeatPump && (
+                      <div className="flex-1 flex items-center gap-2">
+                        <input type="number" value={consumption.heatPumpConsumptionKwh} onChange={(e) => setConsumption({ ...consumption, heatPumpConsumptionKwh: Number(e.target.value) })} className="w-24 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        <span className="text-sm text-slate-600">kWh</span>
+                      </div>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
-                      {t.labelEV}
-                      <Tooltip text={t.tooltipEV} />
+                  <div className="flex flex-col gap-3 pt-2 w-full">
+                    <label className="flex items-center gap-2 cursor-pointer w-full">
+                      <div className="relative">
+                        <input type="checkbox" className="sr-only" checked={consumption.hasEvCharging} onChange={(e) => setConsumption({ ...consumption, hasEvCharging: e.target.checked })} />
+                        <div className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasEvCharging ? 'bg-blue-500' : 'bg-slate-300'}`}></div>
+                        <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasEvCharging ? 'transform translate-x-4' : ''}`}></div>
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
+                        {t.labelEV}
+                        <Tooltip text={t.tooltipEV} />
+                      </span>
                     </label>
-                    <input type="number" value={consumption.evChargingConsumptionKwh} onChange={(e) => setConsumption({ ...consumption, evChargingConsumptionKwh: Number(e.target.value) })} className={inputClass} />
+
+                    {consumption.hasEvCharging && (
+                      <div className="pl-12 grid grid-cols-2 gap-4 w-full">
+                        <div>
+                          <label className="block text-xs text-slate-500 mb-1">{t.labelEVCount}</label>
+                          <input type="number" value={consumption.evChargingPoints} onChange={(e) => setConsumption({ ...consumption, evChargingPoints: Number(e.target.value) })} className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-slate-500 mb-1">{t.labelEVConsumptionPerPointKwh}</label>
+                          <input type="number" value={consumption.evChargingConsumptionPerPointKwh} onChange={(e) => setConsumption({ ...consumption, evChargingConsumptionPerPointKwh: Number(e.target.value) })} className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
