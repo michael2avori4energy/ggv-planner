@@ -16,3 +16,7 @@ npm-debug.log*
 # Editor
 .vscode/
 .idea/
+
+# AI Agent context (local only, not for version control)
+agent_context
+.env
