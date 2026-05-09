@@ -136,6 +136,18 @@ export const translations = {
       'Im klassischen Mieterstrom erhält der Vermieter/Betreiber den Mieterstromzuschlag und der Mieter bekommt einen günstigeren Tarif als vom Grundversorger. Es gilt ein gesetzlicher Deckel.',
     tooltipModelGGV:
       'Bei GGV (Gemeinschaftliche Gebäudeversorgung) nach §42b EnWG können Mieter direkt Strom aus der PV-Anlage beziehen, ohne dass der Betreiber ein Versorgungsunternehmen sein muss.',
+
+    // Tab 3 Optimization
+    sectionOptimize: 'Optimierungsregler',
+    optimizeDescription:
+      'Die zwei wichtigsten Stellschrauben für den Business Case – Änderungen wirken sofort auf alle Kennzahlen.',
+    labelOptTenantRate: 'Verkaufspreis an Mieter',
+    labelOptBattery: 'Batteriespeicher',
+    noBattery: 'Kein Speicher',
+    tooltipOptTenantRate:
+      'Der Verkaufspreis ist der stärkste Hebel für die Einnahmen: jeder Cent mehr multipliziert sich mit der gesamten verkauften Strommenge. Er muss jedoch mindestens 10 % unter dem lokalen Grundversorger-Tarif liegen.',
+    tooltipOptBattery:
+      'Ein größerer Speicher erhöht den Eigenverbrauchsanteil und damit die verkaufte Menge an Mieterstrom – hat aber auch Einfluss auf den CAPEX. Prüfen Sie, ob die Mehrinvestition durch die Mehrerträge gedeckt wird.',
   },
 
   en: {
@@ -273,6 +285,18 @@ export const translations = {
       'In classic tenant electricity, the landlord/operator receives the tenant electricity subsidy and the tenant gets a cheaper tariff than from the grid provider. A legal cap applies.',
     tooltipModelGGV:
       'With GGV (communal building supply) under §42b EnWG, tenants can direct consume electricity from the PV system without the operator needing to be a utility company.',
+
+    // Tab 3 Optimization
+    sectionOptimize: 'Optimization Controls',
+    optimizeDescription:
+      'The two key levers for the business case – changes take effect immediately on all metrics.',
+    labelOptTenantRate: 'Tenant Sales Price',
+    labelOptBattery: 'Battery Storage',
+    noBattery: 'No storage',
+    tooltipOptTenantRate:
+      'The sales price is the strongest revenue lever: every extra cent multiplies across the total electricity sold. It must remain at least 10% below the local utility tariff.',
+    tooltipOptBattery:
+      'A larger battery increases self-consumption and therefore the volume of tenant electricity sold — but also affects CAPEX. Check whether the additional revenue justifies the extra investment.',
   },
 } as const;
 
