@@ -7,18 +7,26 @@ export const translations = {
     appSubtitle: 'Interaktives Simulationsmodell für Immobilien',
 
     // KPI Labels
-    kpiYield: 'Stromerzeugung (PVGIS)',
+    kpiYield: 'PV Energieerzeugung',
     kpiAutarky: 'Autarkiegrad',
     kpiSelfConsumption: 'Eigenverb.',
     kpiLcoe: 'LCOE (Stromgestehungskosten)',
     kpiAmortization: 'Amortisationszeit',
     kpiRoi: 'ROI',
     kpiYears: 'Jahre',
+    tooltipKpiYield:
+      'Geschätze jährlicher PV-Bruttoertrag laut EU-Satellitendaten (PVGIS-Simulation). Abhängig von Standort, Anlagenleistung, Neigungswinkel und Systemverlusten.',
+    tooltipKpiAutarky:
+      'Ungefährerer Anteil des Gesamtstrombedarfs, der durch PV-Direktverbrauch inkl. Batteriezwischenspeicherung gedeckt wird. Je höher, desto weniger Energie wird aus dem Netz bezugen.',
+    tooltipKpiLcoe:
+      'Ermittelte Stromgestehungskosten (Levelized Cost of Electricity): Gesamtkosten der Anlage über die Laufzeit (CAPEX + OPEX + Zinsen) dividiert durch die erzeugte Energiemenge.',
+    tooltipKpiAmortization:
+      'Jahr, in dem die Anlage abbezahlt ist (Break-Even-Punkt). Danach müssen nur noch die Betriebskosten (Software, Wartung) bezahlt werden, der Rest bleibt als Überschuss.',
 
     // Tabs
     tab1: '1. Technische Daten',
-    tab2: '2. Wirtschaftlichkeit',
-    tab3: '3. Resultate & Charts',
+    tab2: '2. Wirtschaftliche Daten',
+    tab3: '3. Ergebnisse',
 
     // Loading
     loading: 'Berechne...',
@@ -32,7 +40,7 @@ export const translations = {
     placeholderAddress: 'z.B. Berlin, Deutschland',
     addressCoords: 'Breite: {lat}, Länge: {lon}',
     tooltipAddress:
-      'Geben Sie eine Adresse ein und wählen Sie einen Vorschlag, das System liest die genauen GPS-Koordinaten für die PVGIS-Berechnung aus.',
+      'Die Adresse wird in GPS-Koordinaten umgerechnet und dient der Abschätzung des jährlichen PV-Ertrags. Er wird nicht gespeichert.',
 
     labelPvCapacity: 'PV-Leistung (kWp)',
     tooltipPvCapacity:
@@ -156,18 +164,26 @@ export const translations = {
     appSubtitle: 'Interactive simulation model for real estate',
 
     // KPI Labels
-    kpiYield: 'Power Generation (PVGIS)',
+    kpiYield: 'PV Energy Generation',
     kpiAutarky: 'Autarky Rate',
     kpiSelfConsumption: 'Self-cons.',
     kpiLcoe: 'LCOE (Levelized Cost of Electricity)',
     kpiAmortization: 'Payback Period',
     kpiRoi: 'ROI',
     kpiYears: 'Years',
+    tooltipKpiYield:
+      'Estimated annual gross PV yield based on EU satellite data (PVGIS simulation). Depends on location, system capacity, tilt angle, and system losses.',
+    tooltipKpiAutarky:
+      'Approximate share of total electricity demand covered by direct PV consumption incl. battery storage. The higher the autarky rate, the less energy is drawn from the grid.',
+    tooltipKpiLcoe:
+      'Calculated Levelized Cost of Electricity: total system costs over its lifetime (CAPEX + OPEX + interest) divided by the total energy generated.',
+    tooltipKpiAmortization:
+      'The year in which the system is fully paid off (break-even point). After that, only operating costs (software, maintenance) need to be covered – the rest remains as surplus.',
 
     // Tabs
     tab1: '1. Technical Data',
-    tab2: '2. Economics',
-    tab3: '3. Results & Charts',
+    tab2: '2. Economic Data',
+    tab3: '3. Results',
 
     // Loading
     loading: 'Calculating...',
