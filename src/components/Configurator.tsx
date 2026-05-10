@@ -13,7 +13,7 @@ import { EnergyMixChart } from './charts/EnergyMixChart';
 import { CashflowChart } from './charts/CashflowChart';
 import { Tooltip } from './Tooltip';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Calculator, Battery, Home, Zap, Euro, LineChart, MapPin, SlidersHorizontal, ChevronRight } from 'lucide-react';
+import { Calculator, Battery, Home, Zap, Euro, LineChart, MapPin, SlidersHorizontal, ChevronRight, ChevronLeft } from 'lucide-react';
 import Autocomplete from 'react-google-autocomplete';
 
 export const Configurator: React.FC = () => {
@@ -858,12 +858,13 @@ export const Configurator: React.FC = () => {
                     </h3>
                     <CashflowChart
                       data={ecoResults.cashflowPlan}
+                      selectedIndex={selectedYearIndex}
                       onBarClick={(idx: number) => setSelectedYearIndex(idx)}
                     />
 
                     {ecoResults.cashflowPlan.length > 0 && (
                       <div className="mt-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm lg:mx-12">
-                        <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
+                        <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
                           <h4 className="font-semibold text-slate-700">
                             {t.tableTitle.replace(
                               '{year}',
@@ -873,6 +874,22 @@ export const Configurator: React.FC = () => {
                               )
                             )}
                           </h4>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => setSelectedYearIndex((i) => i - 1)}
+                              disabled={selectedYearIndex === 0}
+                              className="p-1.5 rounded-md text-slate-500 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            >
+                              <ChevronLeft size={16} />
+                            </button>
+                            <button
+                              onClick={() => setSelectedYearIndex((i) => i + 1)}
+                              disabled={selectedYearIndex === ecoResults.cashflowPlan.length - 1}
+                              className="p-1.5 rounded-md text-slate-500 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            >
+                              <ChevronRight size={16} />
+                            </button>
+                          </div>
                         </div>
                         <div className="overflow-x-auto">
                           <table className="w-full text-sm text-left">
