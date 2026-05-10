@@ -13,7 +13,7 @@ import { EnergyMixChart } from './charts/EnergyMixChart';
 import { CashflowChart } from './charts/CashflowChart';
 import { Tooltip } from './Tooltip';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Calculator, Battery, Home, Zap, Euro, LineChart, MapPin, SlidersHorizontal } from 'lucide-react';
+import { Calculator, Battery, Home, Zap, Euro, LineChart, MapPin, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import Autocomplete from 'react-google-autocomplete';
 
 export const Configurator: React.FC = () => {
@@ -469,6 +469,16 @@ export const Configurator: React.FC = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="flex justify-end mt-8">
+                <button
+                  onClick={() => setActiveTab(2)}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  {t.btnNext}
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
           )}
 
@@ -700,6 +710,16 @@ export const Configurator: React.FC = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="flex justify-end mt-8">
+                <button
+                  onClick={() => setActiveTab(3)}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  {t.btnNext}
+                  <ChevronRight size={18} />
+                </button>
               </div>
             </div>
           )}

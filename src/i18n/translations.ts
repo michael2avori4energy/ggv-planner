@@ -28,6 +28,8 @@ export const translations = {
     tab2: '2. Wirtschaftliche Daten',
     tab3: '3. Ergebnisse',
 
+    btnNext: 'Weiter',
+
     // Loading
     loading: 'Berechne...',
 
@@ -184,6 +186,8 @@ export const translations = {
     tab1: '1. Technical Data',
     tab2: '2. Economic Data',
     tab3: '3. Results',
+
+    btnNext: 'Next',
 
     // Loading
     loading: 'Calculating...',
