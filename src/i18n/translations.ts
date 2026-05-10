@@ -9,19 +9,23 @@ export const translations = {
     // KPI Labels
     kpiYield: 'PV Energieerzeugung',
     kpiAutarky: 'Autarkiegrad',
-    kpiSelfConsumption: 'Eigenverb.',
-    kpiLcoe: 'LCOE (Stromgestehungskosten)',
+    kpiSelfConsumption: 'Eigenverbrauchsquote',
+    kpiLcoe: 'Stromgestehungskosten',
     kpiAmortization: 'Amortisationszeit',
-    kpiRoi: 'ROI',
+    kpiRoi: 'Return on Investment',
     kpiYears: 'Jahre',
     tooltipKpiYield:
       'Geschätze jährlicher PV-Bruttoertrag laut EU-Satellitendaten (PVGIS-Simulation). Abhängig von Standort, Anlagenleistung, Neigungswinkel und Systemverlusten.',
     tooltipKpiAutarky:
       'Ungefährerer Anteil des Gesamtstrombedarfs, der durch PV-Direktverbrauch inkl. Batteriezwischenspeicherung gedeckt wird. Je höher, desto weniger Energie wird aus dem Netz bezugen.',
+    tooltipKpiSelfConsumption:
+      'Anteil des erzeugten PV-Stroms, der direkt im Gebäude verbraucht wird (inkl. Batteriespeicher). Je höher, desto weniger Überschuss wird ins Netz eingespeist.',
     tooltipKpiLcoe:
-      'Ermittelte Stromgestehungskosten (Levelized Cost of Electricity): Gesamtkosten der Anlage über die Laufzeit (CAPEX + OPEX + Zinsen) dividiert durch die erzeugte Energiemenge.',
+      'Ermittelte Stromgestehungskosten: Gesamtkosten der Anlage über die Laufzeit (CAPEX + OPEX + Zinsen) dividiert durch die erzeugte Energiemenge.',
     tooltipKpiAmortization:
       'Jahr, in dem die Anlage abbezahlt ist (Break-Even-Punkt). Danach müssen nur noch die Betriebskosten (Software, Wartung) bezahlt werden, der Rest bleibt als Überschuss.',
+    tooltipKpiRoi:
+      'Zeigt die Rendite des eingesetzten Eigenkapitals. Gesamte Nettoeinnahmen über den Betrachtungszeitraum im Verhältnis zur Eigenkapitalinvestition (CAPEX − Kreditbetrag). ',
 
     // Tabs
     tab1: '1. Technische Daten',
@@ -168,7 +172,7 @@ export const translations = {
     // KPI Labels
     kpiYield: 'PV Energy Generation',
     kpiAutarky: 'Autarky Rate',
-    kpiSelfConsumption: 'Self-cons.',
+    kpiSelfConsumption: 'Self-consumption Rate',
     kpiLcoe: 'LCOE (Levelized Cost of Electricity)',
     kpiAmortization: 'Payback Period',
     kpiRoi: 'ROI',
@@ -177,10 +181,14 @@ export const translations = {
       'Estimated annual gross PV yield based on EU satellite data (PVGIS simulation). Depends on location, system capacity, tilt angle, and system losses.',
     tooltipKpiAutarky:
       'Approximate share of total electricity demand covered by direct PV consumption incl. battery storage. The higher the autarky rate, the less energy is drawn from the grid.',
+    tooltipKpiSelfConsumption:
+      'Share of generated PV electricity consumed directly in the building (incl. battery storage). Higher means less surplus is fed into the grid.',
     tooltipKpiLcoe:
       'Calculated Levelized Cost of Electricity: total system costs over its lifetime (CAPEX + OPEX + interest) divided by the total energy generated.',
     tooltipKpiAmortization:
       'The year in which the system is fully paid off (break-even point). After that, only operating costs (software, maintenance) need to be covered – the rest remains as surplus.',
+    tooltipKpiRoi:
+      'Return on Investment: total net revenue over the calculation period relative to the equity invested (CAPEX − loan amount). Indicates the return on equity.',
 
     // Tabs
     tab1: '1. Technical Data',

@@ -151,7 +151,7 @@ export const Configurator: React.FC = () => {
     'w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-blue-500';
 
   return (
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full">
       {/* Header / KPIs */}
       <KPIDisplay energy={energy} economics={ecoResults} />
 
@@ -823,8 +823,8 @@ export const Configurator: React.FC = () => {
               </div>
 
               {ecoResults.cashflowPlan.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                  <div className="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center self-start">
                     <h3 className="font-semibold text-slate-700 mb-4 text-center">
                       {t.chartEnergyTitle}
                     </h3>
@@ -849,8 +849,8 @@ export const Configurator: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="lg:col-span-2">
-                    <h3 className="font-semibold text-slate-700 mb-4 ml-12">
+                  <div className="lg:col-span-3">
+                    <h3 className="font-semibold text-slate-700 mb-4">
                       {t.chartCashflowTitle.replace(
                         '{years}',
                         String(economics.calculationPeriodYears)
@@ -863,7 +863,7 @@ export const Configurator: React.FC = () => {
                     />
 
                     {ecoResults.cashflowPlan.length > 0 && (
-                      <div className="mt-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm lg:mx-12">
+                      <div className="mt-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                         <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
                           <h4 className="font-semibold text-slate-700">
                             {t.tableTitle.replace(

@@ -23,7 +23,7 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data, selectedInde
   const opacity = (idx: number) => (selectedIndex === undefined || idx === selectedIndex ? 1 : 0.35);
 
   return (
-    <div className="h-96 w-full">
+    <div className="h-[460px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
