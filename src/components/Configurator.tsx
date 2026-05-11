@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   SystemParams,
   ConsumptionParams,
@@ -12,39 +12,25 @@ import { KPIDisplay } from './KPIDisplay';
 import { EnergyMixChart } from './charts/EnergyMixChart';
 import { CashflowChart } from './charts/CashflowChart';
 import { Tooltip } from './Tooltip';
+import { AddressAutocomplete } from './AddressAutocomplete';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Calculator, Battery, Home, Zap, Euro, LineChart, MapPin, SlidersHorizontal, ChevronRight, ChevronLeft } from 'lucide-react';
-import Autocomplete from 'react-google-autocomplete';
+import {
+  Calculator,
+  Battery,
+  Home,
+  Zap,
+  Euro,
+  LineChart,
+  SlidersHorizontal,
+  ChevronRight,
+  ChevronLeft,
+} from 'lucide-react';
 
 export const Configurator: React.FC = () => {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedYearIndex, setSelectedYearIndex] = useState(0);
-  const typedAddressRef = useRef('');
-  const placeWasSelectedRef = useRef(false);
-
-  const geocodeByText = async () => {
-    const text = typedAddressRef.current.trim();
-    if (!text || placeWasSelectedRef.current) return;
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&limit=1`,
-        { headers: { 'Accept-Language': 'de,en' } }
-      );
-      const results = await res.json();
-      if (results.length > 0) {
-        setSystem((s) => ({
-          ...s,
-          address: results[0].display_name,
-          locationLat: Number(results[0].lat),
-          locationLon: Number(results[0].lon),
-        }));
-      }
-    } catch (err) {
-      console.error('Geocoding error:', err);
-    }
-  };
 
   // State: Inputs
   const [system, setSystem] = useState<SystemParams>({
@@ -213,49 +199,13 @@ export const Configurator: React.FC = () => {
                       {t.labelAddress}
                       <Tooltip text={t.tooltipAddress} />
                     </label>
-                    <div className="relative flex items-center">
-                      <MapPin
-                        className="absolute left-3 text-slate-400 pointer-events-none"
-                        size={18}
-                      />
-                      <Autocomplete
-                        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-                        onPlaceSelected={(place: google.maps.places.PlaceResult) => {
-                          placeWasSelectedRef.current = true;
-                          if (place && place.geometry && place.geometry.location) {
-                            const lat =
-                              typeof place.geometry.location.lat === 'function'
-                                ? place.geometry.location.lat()
-                                : place.geometry.location.lat;
-                            const lon =
-                              typeof place.geometry.location.lng === 'function'
-                                ? place.geometry.location.lng()
-                                : place.geometry.location.lng;
-                            setSystem((s) => ({
-                              ...s,
-                              address: place.formatted_address || s.address,
-                              locationLat: Number(lat),
-                              locationLon: Number(lon),
-                            }));
-                          }
-                        }}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                          typedAddressRef.current = e.target.value;
-                          placeWasSelectedRef.current = false;
-                        }}
-                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            geocodeByText();
-                          }
-                        }}
-                        onBlur={geocodeByText}
-                        defaultValue={system.address}
-                        options={{ types: ['geocode'] }}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow"
-                        placeholder={t.placeholderAddress}
-                      />
-                    </div>
+                    <AddressAutocomplete
+                      defaultValue={system.address}
+                      placeholder={t.placeholderAddress}
+                      onSelect={(address: string, lat: number, lon: number) =>
+                        setSystem((s) => ({ ...s, address, locationLat: lat, locationLon: lon }))
+                      }
+                    />
                     <p className="text-xs text-slate-500 mt-1">
                       {t.addressCoords
                         .replace('{lat}', system.locationLat.toFixed(4))
