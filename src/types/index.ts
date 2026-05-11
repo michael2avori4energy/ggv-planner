@@ -12,12 +12,14 @@ export interface SystemParams {
 
 export interface ConsumptionParams {
   apartments: number; // Anzahl der WE
+  participationRate: number; // Teilnehmerquote 0–1 (Anteil der am Modell teilnehmenden WE)
   consumptionPerApartmentKwh: number; // kWh pro Jahr/WE
   hasHeatPump: boolean; // Wärmepumpe vorhanden?
   heatPumpConsumptionKwh: number; // Wärmepumpen-Bedarf kWh
   hasEvCharging: boolean; // E-Mobilität vorhanden?
   evChargingPoints: number; // Anzahl Ladepunkte
   evChargingConsumptionPerPointKwh: number; // Energiebedarf pro Ladepunkt in kWh
+  hasGeneralConsumption: boolean; // Allgemeinstrom vorhanden?
   generalConsumptionKwh: number; // Allgemeinstrom kWh
 }
 

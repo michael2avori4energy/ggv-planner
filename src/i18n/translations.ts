@@ -61,6 +61,10 @@ export const translations = {
     tooltipApartments:
       'Anzahl der angeschlossenen Mietparteien. Je mehr Wohneinheiten, desto größer der Gesamtstromverbrauch.',
 
+    labelParticipationRate: 'Teilnehmerquote WE',
+    tooltipParticipationRate:
+      'Anteil der Wohneinheiten, die aktiv am Mieterstrom- bzw. GGV-Modell teilnehmen. Nicht alle Mieter müssen mitmachen – diese Quote beeinflusst den modellrelevanten Verbrauch sowie die Grundgebühr-Einnahmen.',
+
     labelConsumptionPerApartment: 'Verbrauch/WE (kWh)',
     tooltipConsumptionPerApartment:
       'Durchschnittlicher Jahresstromverbrauch pro Wohneinheit. Typisch: 2.000–3.500 kWh/a für Haushalte ohne Wärmenutzung.',
@@ -75,6 +79,10 @@ export const translations = {
 
     tooltipEV:
       'Gesamter Jahresstromverbrauch für das Laden von Elektrofahrzeugen. Ca. 2.000–4.000 kWh/a pro Fahrzeug.',
+
+    labelGeneralConsumption: 'Allgemeinstrom (kWh/a)',
+    tooltipGeneralConsumption:
+      'Stromverbrauch für gemeinschaftlich genutzte Bereiche wie Treppenhaus, Keller, Außenbeleuchtung oder Aufzug. Typisch: 1.000–5.000 kWh/a je nach Gebäudegröße.',
 
     // Tab 2: Economic
     tab2Title: 'Wirtschaftliche Parameter',
@@ -154,14 +162,17 @@ export const translations = {
     // Tab 3 Optimization
     sectionOptimize: 'Optimierungsregler',
     optimizeDescription:
-      'Die zwei wichtigsten Stellschrauben für den Business Case – Änderungen wirken sofort auf alle Kennzahlen.',
+      'Die drei wichtigsten Stellschrauben für den Business Case – Änderungen wirken sofort auf alle Kennzahlen.',
     labelOptTenantRate: 'Verkaufspreis an Mieter',
     labelOptBattery: 'Batteriespeicher',
+    labelOptParticipation: 'Teilnehmerquote WE',
     noBattery: 'Kein Speicher',
     tooltipOptTenantRate:
       'Der Verkaufspreis ist der stärkste Hebel für die Einnahmen: jeder Cent mehr multipliziert sich mit der gesamten verkauften Strommenge. Er muss jedoch mindestens 10 % unter dem lokalen Grundversorger-Tarif liegen.',
     tooltipOptBattery:
       'Ein größerer Speicher erhöht den Eigenverbrauchsanteil und damit die verkaufte Menge an Mieterstrom – hat aber auch Einfluss auf den CAPEX. Prüfen Sie, ob die Mehrinvestition durch die Mehrerträge gedeckt wird.',
+    tooltipOptParticipation:
+      'Je höher die Teilnehmerquote, desto mehr Mieter beziehen Strom aus der Anlage – und desto höher sind Grundgebühr- und Mieterstromeinnahmen. In der Praxis liegt die Quote selten bei 100 %.',
   },
 
   en: {
@@ -224,6 +235,10 @@ export const translations = {
     tooltipApartments:
       'Number of connected tenant units. More apartments means greater total electricity consumption.',
 
+    labelParticipationRate: 'Participation Rate',
+    tooltipParticipationRate:
+      'Share of apartments actively participating in the tenant electricity or GGV model. Not all tenants have to join – this rate affects the model-relevant consumption and base fee revenue.',
+
     labelConsumptionPerApartment: 'Consumption/unit (kWh)',
     tooltipConsumptionPerApartment:
       'Average annual electricity consumption per apartment. Typical: 2,000–3,500 kWh/year for households without heat use.',
@@ -237,6 +252,10 @@ export const translations = {
     labelEVConsumptionPerPointKwh: 'annual kWh per charging point',
     tooltipEV:
       'Total annual electricity consumption for electric vehicle charging. Approx. 2,000–4,000 kWh/year per vehicle.',
+
+    labelGeneralConsumption: 'Common Area Electricity (kWh/a)',
+    tooltipGeneralConsumption:
+      'Electricity for shared areas such as stairwells, basement, outdoor lighting, or elevators. Typical: 1,000–5,000 kWh/year depending on building size.',
 
     // Tab 2: Economic
     tab2Title: 'Economic Parameters',
@@ -317,14 +336,17 @@ export const translations = {
     // Tab 3 Optimization
     sectionOptimize: 'Optimization Controls',
     optimizeDescription:
-      'The two key levers for the business case – changes take effect immediately on all metrics.',
+      'The three key levers for the business case – changes take effect immediately on all metrics.',
     labelOptTenantRate: 'Tenant Sales Price',
     labelOptBattery: 'Battery Storage',
+    labelOptParticipation: 'Participation Rate',
     noBattery: 'No storage',
     tooltipOptTenantRate:
       'The sales price is the strongest revenue lever: every extra cent multiplies across the total electricity sold. It must remain at least 10% below the local utility tariff.',
     tooltipOptBattery:
       'A larger battery increases self-consumption and therefore the volume of tenant electricity sold — but also affects CAPEX. Check whether the additional revenue justifies the extra investment.',
+    tooltipOptParticipation:
+      'The higher the participation rate, the more tenants draw electricity from the system — increasing base fee and tenant electricity revenues. In practice, 100% participation is rarely achieved.',
   },
 } as const;
 

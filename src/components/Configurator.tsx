@@ -47,12 +47,14 @@ export const Configurator: React.FC = () => {
 
   const [consumption, setConsumption] = useState<ConsumptionParams>({
     apartments: 10,
+    participationRate: 1.0,
     consumptionPerApartmentKwh: 1800,
-    hasHeatPump: true,
+    hasHeatPump: false,
     heatPumpConsumptionKwh: 10000,
-    hasEvCharging: true,
+    hasEvCharging: false,
     evChargingPoints: 2,
     evChargingConsumptionPerPointKwh: 2500,
+    hasGeneralConsumption: false,
     generalConsumptionKwh: 2000,
   });
 
@@ -79,6 +81,7 @@ export const Configurator: React.FC = () => {
     tenantElectricityRate: economics.tenantElectricityRate,
     batteryCapacityKwh: system.batteryCapacityKwh,
     hasBattery: system.hasBattery,
+    participationRate: consumption.participationRate,
   });
 
   // State: Results (with dummy defaults)
@@ -127,6 +130,7 @@ export const Configurator: React.FC = () => {
         tenantElectricityRate: economics.tenantElectricityRate,
         batteryCapacityKwh: system.batteryCapacityKwh,
         hasBattery: system.hasBattery,
+        participationRate: consumption.participationRate,
       });
     }
   }, [activeTab]);
@@ -280,7 +284,7 @@ export const Configurator: React.FC = () => {
                     {t.sectionConsumption}
                   </h3>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         <Home size={14} className="mr-1" /> {t.labelApartments}
@@ -295,6 +299,37 @@ export const Configurator: React.FC = () => {
                         className={inputClass}
                       />
                     </div>
+
+                    <div>
+                      <label className="flex justify-between text-sm font-medium text-slate-700 mb-2">
+                        <span className="flex items-center">
+                          {t.labelParticipationRate}
+                          <Tooltip text={t.tooltipParticipationRate} />
+                        </span>
+                        <span className="text-blue-600 font-semibold">
+                          {Math.round(consumption.participationRate * 100)} %
+                        </span>
+                      </label>
+                      <input
+                        type="range"
+                        min="5"
+                        max="100"
+                        step="5"
+                        value={Math.round(consumption.participationRate * 100)}
+                        onChange={(e) =>
+                          setConsumption({
+                            ...consumption,
+                            participationRate: Number(e.target.value) / 100,
+                          })
+                        }
+                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                      />
+                      <div className="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>5 %</span>
+                        <span>100 %</span>
+                      </div>
+                    </div>
+
                     <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelConsumptionPerApartment}
@@ -414,6 +449,51 @@ export const Configurator: React.FC = () => {
                             className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
                           />
                         </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-3 pt-2 w-full">
+                    <label className="flex items-center gap-2 cursor-pointer flex-1">
+                      <div className="relative">
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={consumption.hasGeneralConsumption}
+                          onChange={(e) =>
+                            setConsumption({
+                              ...consumption,
+                              hasGeneralConsumption: e.target.checked,
+                            })
+                          }
+                        />
+                        <div
+                          className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasGeneralConsumption ? 'bg-blue-500' : 'bg-slate-300'}`}
+                        ></div>
+                        <div
+                          className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasGeneralConsumption ? 'transform translate-x-4' : ''}`}
+                        ></div>
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
+                        {t.labelGeneralConsumption}
+                        <Tooltip text={t.tooltipGeneralConsumption} />
+                      </span>
+                    </label>
+
+                    {consumption.hasGeneralConsumption && (
+                      <div className="flex-1 flex items-center gap-2">
+                        <input
+                          type="number"
+                          value={consumption.generalConsumptionKwh}
+                          onChange={(e) =>
+                            setConsumption({
+                              ...consumption,
+                              generalConsumptionKwh: Number(e.target.value),
+                            })
+                          }
+                          className="w-24 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
+                        />
+                        <span className="text-sm text-slate-600">kWh</span>
                       </div>
                     )}
                   </div>
@@ -702,7 +782,7 @@ export const Configurator: React.FC = () => {
                   const battMax = Math.max(30, Math.round((battBase * 1.5) / 5) * 5);
 
                   return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       {/* Slider: Verkaufspreis */}
                       <div>
                         <label className="flex justify-between text-sm font-medium text-slate-700 mb-2">
@@ -765,6 +845,38 @@ export const Configurator: React.FC = () => {
                         <div className="flex justify-between text-xs text-slate-400 mt-1">
                           <span>{t.noBattery}</span>
                           <span>+50 % {battMax} kWh</span>
+                        </div>
+                      </div>
+
+                      {/* Slider: Teilnehmerquote */}
+                      <div>
+                        <label className="flex justify-between text-sm font-medium text-slate-700 mb-2">
+                          <span className="flex items-center">
+                            {t.labelOptParticipation}
+                            <Tooltip text={t.tooltipOptParticipation} />
+                          </span>
+                          <span className="text-green-700 font-semibold">
+                            {Math.round(consumption.participationRate * 100)} %
+                          </span>
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          step="5"
+                          value={Math.round(consumption.participationRate * 100)}
+                          onChange={(e) =>
+                            setConsumption({
+                              ...consumption,
+                              participationRate: Number(e.target.value) / 100,
+                            })
+                          }
+                          className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-green-600"
+                          style={{ background: '#bbf7d0' }}
+                        />
+                        <div className="flex justify-between text-xs text-slate-400 mt-1">
+                          <span>0 %</span>
+                          <span>100 %</span>
                         </div>
                       </div>
                     </div>
