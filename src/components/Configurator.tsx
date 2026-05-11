@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   SystemParams,
   ConsumptionParams,
@@ -13,7 +13,7 @@ import { EnergyMixChart } from './charts/EnergyMixChart';
 import { CashflowChart } from './charts/CashflowChart';
 import { Tooltip } from './Tooltip';
 import { useLanguage } from '../i18n/LanguageContext';
-import { Calculator, Battery, Home, Zap, Euro, LineChart, MapPin } from 'lucide-react';
+import { Calculator, Battery, Home, Zap, Euro, LineChart, MapPin, SlidersHorizontal, ChevronRight, ChevronLeft } from 'lucide-react';
 import Autocomplete from 'react-google-autocomplete';
 
 export const Configurator: React.FC = () => {
@@ -21,6 +21,30 @@ export const Configurator: React.FC = () => {
   const [activeTab, setActiveTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedYearIndex, setSelectedYearIndex] = useState(0);
+  const typedAddressRef = useRef('');
+  const placeWasSelectedRef = useRef(false);
+
+  const geocodeByText = async () => {
+    const text = typedAddressRef.current.trim();
+    if (!text || placeWasSelectedRef.current) return;
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&limit=1`,
+        { headers: { 'Accept-Language': 'de,en' } }
+      );
+      const results = await res.json();
+      if (results.length > 0) {
+        setSystem((s) => ({
+          ...s,
+          address: results[0].display_name,
+          locationLat: Number(results[0].lat),
+          locationLon: Number(results[0].lon),
+        }));
+      }
+    } catch (err) {
+      console.error('Geocoding error:', err);
+    }
+  };
 
   // State: Inputs
   const [system, setSystem] = useState<SystemParams>({
@@ -64,6 +88,13 @@ export const Configurator: React.FC = () => {
     interestRate: 4.5,
   });
 
+  // Snapshot der Kundeneingaben beim Betreten von Tab 3 — Basis für ±50%-Optimierungsbereiche
+  const [optimizationBase, setOptimizationBase] = useState({
+    tenantElectricityRate: economics.tenantElectricityRate,
+    batteryCapacityKwh: system.batteryCapacityKwh,
+    hasBattery: system.hasBattery,
+  });
+
   // State: Results (with dummy defaults)
   const [energy, setEnergy] = useState<EnergyResults>({
     totalYieldKwh: 0,
@@ -103,13 +134,24 @@ export const Configurator: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [system, consumption, economics, financing]);
 
+  // Beim Wechsel zu Tab 3 aktuelle Kundeneingaben als ±50%-Referenz einfrieren
+  useEffect(() => {
+    if (activeTab === 3) {
+      setOptimizationBase({
+        tenantElectricityRate: economics.tenantElectricityRate,
+        batteryCapacityKwh: system.batteryCapacityKwh,
+        hasBattery: system.hasBattery,
+      });
+    }
+  }, [activeTab]);
+
   const inputClass =
     'w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white transition-colors outline-none focus:border-blue-500';
   const inputClassEco =
     'w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-blue-500';
 
   return (
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full">
       {/* Header / KPIs */}
       <KPIDisplay energy={energy} economics={ecoResults} />
 
@@ -179,6 +221,7 @@ export const Configurator: React.FC = () => {
                       <Autocomplete
                         apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                         onPlaceSelected={(place: google.maps.places.PlaceResult) => {
+                          placeWasSelectedRef.current = true;
                           if (place && place.geometry && place.geometry.location) {
                             const lat =
                               typeof place.geometry.location.lat === 'function'
@@ -188,16 +231,27 @@ export const Configurator: React.FC = () => {
                               typeof place.geometry.location.lng === 'function'
                                 ? place.geometry.location.lng()
                                 : place.geometry.location.lng;
-                            setSystem({
-                              ...system,
-                              address: place.formatted_address || system.address,
+                            setSystem((s) => ({
+                              ...s,
+                              address: place.formatted_address || s.address,
                               locationLat: Number(lat),
                               locationLon: Number(lon),
-                            });
+                            }));
                           }
                         }}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          typedAddressRef.current = e.target.value;
+                          placeWasSelectedRef.current = false;
+                        }}
+                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            geocodeByText();
+                          }
+                        }}
+                        onBlur={geocodeByText}
                         defaultValue={system.address}
-                        options={{ types: ['address'] }}
+                        options={{ types: ['geocode'] }}
                         className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow"
                         placeholder={t.placeholderAddress}
                       />
@@ -414,6 +468,16 @@ export const Configurator: React.FC = () => {
                     )}
                   </div>
                 </div>
+              </div>
+
+              <div className="flex justify-end mt-8">
+                <button
+                  onClick={() => setActiveTab(2)}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  {t.btnNext}
+                  <ChevronRight size={18} />
+                </button>
               </div>
             </div>
           )}
@@ -647,6 +711,16 @@ export const Configurator: React.FC = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="flex justify-end mt-8">
+                <button
+                  onClick={() => setActiveTab(3)}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  {t.btnNext}
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
           )}
 
@@ -658,9 +732,99 @@ export const Configurator: React.FC = () => {
                 {t.tab3Title}
               </h2>
 
+              {/* Optimization Panel */}
+              <div className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-green-800 mb-1 flex items-center gap-2">
+                  <SlidersHorizontal size={18} className="text-green-600" />
+                  {t.sectionOptimize}
+                </h3>
+                <p className="text-sm text-green-700 mb-4">{t.optimizeDescription}</p>
+                {(() => {
+                  // ±50% um die Kundeneingabe aus Tab 1/2, auf sinnvolle Schritte gerundet
+                  const rateBase = optimizationBase.tenantElectricityRate;
+                  const rateMin = Math.max(1, Math.round(rateBase * 0.5 * 2) / 2);
+                  const rateMax = Math.round(rateBase * 1.5 * 2) / 2;
+
+                  // Batterie: min immer 0 (= kein Speicher), max +50% des konfigurierten Wertes
+                  const battBase = optimizationBase.hasBattery
+                    ? optimizationBase.batteryCapacityKwh
+                    : 20;
+                  const battMax = Math.max(30, Math.round((battBase * 1.5) / 5) * 5);
+
+                  return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Slider: Verkaufspreis */}
+                      <div>
+                        <label className="flex justify-between text-sm font-medium text-slate-700 mb-2">
+                          <span className="flex items-center">
+                            {t.labelOptTenantRate}
+                            <Tooltip text={t.tooltipOptTenantRate} />
+                          </span>
+                          <span className="text-green-700 font-semibold">
+                            {economics.tenantElectricityRate.toFixed(1)} ct/kWh
+                          </span>
+                        </label>
+                        <input
+                          type="range"
+                          min={rateMin}
+                          max={rateMax}
+                          step="0.5"
+                          value={economics.tenantElectricityRate}
+                          onChange={(e) =>
+                            setEconomics({
+                              ...economics,
+                              tenantElectricityRate: Number(e.target.value),
+                            })
+                          }
+                          className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-green-600"
+                          style={{ background: '#bbf7d0' }}
+                        />
+                        <div className="flex justify-between text-xs text-slate-400 mt-1">
+                          <span>{rateMin.toFixed(1)} ct (−50 %)</span>
+                          <span>+50 % {rateMax.toFixed(1)} ct</span>
+                        </div>
+                      </div>
+
+                      {/* Slider: Batteriespeicher */}
+                      <div>
+                        <label className="flex justify-between text-sm font-medium text-slate-700 mb-2">
+                          <span className="flex items-center gap-1">
+                            <Battery size={14} />
+                            {t.labelOptBattery}
+                            <Tooltip text={t.tooltipOptBattery} />
+                          </span>
+                          <span className="text-green-700 font-semibold">
+                            {system.hasBattery && system.batteryCapacityKwh > 0
+                              ? `${system.batteryCapacityKwh} kWh`
+                              : t.noBattery}
+                          </span>
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max={battMax}
+                          step="5"
+                          value={system.hasBattery ? system.batteryCapacityKwh : 0}
+                          onChange={(e) => {
+                            const val = Number(e.target.value);
+                            setSystem({ ...system, hasBattery: val > 0, batteryCapacityKwh: val });
+                          }}
+                          className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-green-600"
+                          style={{ background: '#bbf7d0' }}
+                        />
+                        <div className="flex justify-between text-xs text-slate-400 mt-1">
+                          <span>{t.noBattery}</span>
+                          <span>+50 % {battMax} kWh</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+
               {ecoResults.cashflowPlan.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                  <div className="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center self-start">
                     <h3 className="font-semibold text-slate-700 mb-4 text-center">
                       {t.chartEnergyTitle}
                     </h3>
@@ -685,8 +849,8 @@ export const Configurator: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="lg:col-span-2">
-                    <h3 className="font-semibold text-slate-700 mb-4 ml-12">
+                  <div className="lg:col-span-3">
+                    <h3 className="font-semibold text-slate-700 mb-4">
                       {t.chartCashflowTitle.replace(
                         '{years}',
                         String(economics.calculationPeriodYears)
@@ -694,12 +858,13 @@ export const Configurator: React.FC = () => {
                     </h3>
                     <CashflowChart
                       data={ecoResults.cashflowPlan}
+                      selectedIndex={selectedYearIndex}
                       onBarClick={(idx: number) => setSelectedYearIndex(idx)}
                     />
 
                     {ecoResults.cashflowPlan.length > 0 && (
-                      <div className="mt-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm lg:mx-12">
-                        <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
+                      <div className="mt-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
                           <h4 className="font-semibold text-slate-700">
                             {t.tableTitle.replace(
                               '{year}',
@@ -709,6 +874,22 @@ export const Configurator: React.FC = () => {
                               )
                             )}
                           </h4>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => setSelectedYearIndex((i) => i - 1)}
+                              disabled={selectedYearIndex === 0}
+                              className="p-1.5 rounded-md text-slate-500 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            >
+                              <ChevronLeft size={16} />
+                            </button>
+                            <button
+                              onClick={() => setSelectedYearIndex((i) => i + 1)}
+                              disabled={selectedYearIndex === ecoResults.cashflowPlan.length - 1}
+                              className="p-1.5 rounded-md text-slate-500 hover:bg-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            >
+                              <ChevronRight size={16} />
+                            </button>
+                          </div>
                         </div>
                         <div className="overflow-x-auto">
                           <table className="w-full text-sm text-left">

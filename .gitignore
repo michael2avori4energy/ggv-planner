@@ -1,1 +1,22 @@
 .env
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Vite cache
+.vite
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+
+# AI Agent context (local only, not for version control)
+agent_context
+.env

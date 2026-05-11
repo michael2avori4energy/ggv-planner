@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/pvgis-api/*"
+  to = "https://re.jrc.ec.europa.eu/:splat"
+  status = 200
+  force = true

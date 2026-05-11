@@ -7,18 +7,32 @@ export const translations = {
     appSubtitle: 'Interaktives Simulationsmodell für Immobilien',
 
     // KPI Labels
-    kpiYield: 'Stromerzeugung (PVGIS)',
+    kpiYield: 'PV Energieerzeugung',
     kpiAutarky: 'Autarkiegrad',
-    kpiSelfConsumption: 'Eigenverb.',
-    kpiLcoe: 'LCOE (Stromgestehungskosten)',
+    kpiSelfConsumption: 'Eigenverbrauchsquote',
+    kpiLcoe: 'Stromgestehungskosten',
     kpiAmortization: 'Amortisationszeit',
-    kpiRoi: 'ROI',
+    kpiRoi: 'Return on Investment',
     kpiYears: 'Jahre',
+    tooltipKpiYield:
+      'Geschätze jährlicher PV-Bruttoertrag laut EU-Satellitendaten (PVGIS-Simulation). Abhängig von Standort, Anlagenleistung, Neigungswinkel und Systemverlusten.',
+    tooltipKpiAutarky:
+      'Ungefährerer Anteil des Gesamtstrombedarfs, der durch PV-Direktverbrauch inkl. Batteriezwischenspeicherung gedeckt wird. Je höher, desto weniger Energie wird aus dem Netz bezugen.',
+    tooltipKpiSelfConsumption:
+      'Anteil des erzeugten PV-Stroms, der direkt im Gebäude verbraucht wird (inkl. Batteriespeicher). Je höher, desto weniger Überschuss wird ins Netz eingespeist.',
+    tooltipKpiLcoe:
+      'Ermittelte Stromgestehungskosten: Gesamtkosten der Anlage über die Laufzeit (CAPEX + OPEX + Zinsen) dividiert durch die erzeugte Energiemenge.',
+    tooltipKpiAmortization:
+      'Jahr, in dem die Anlage abbezahlt ist (Break-Even-Punkt). Danach müssen nur noch die Betriebskosten (Software, Wartung) bezahlt werden, der Rest bleibt als Überschuss.',
+    tooltipKpiRoi:
+      'Zeigt die Rendite des eingesetzten Eigenkapitals. Gesamte Nettoeinnahmen über den Betrachtungszeitraum im Verhältnis zur Eigenkapitalinvestition (CAPEX − Kreditbetrag). ',
 
     // Tabs
     tab1: '1. Technische Daten',
-    tab2: '2. Wirtschaftlichkeit',
-    tab3: '3. Resultate & Charts',
+    tab2: '2. Wirtschaftliche Daten',
+    tab3: '3. Ergebnisse',
+
+    btnNext: 'Weiter',
 
     // Loading
     loading: 'Berechne...',
@@ -32,7 +46,7 @@ export const translations = {
     placeholderAddress: 'z.B. Berlin, Deutschland',
     addressCoords: 'Breite: {lat}, Länge: {lon}',
     tooltipAddress:
-      'Geben Sie eine Adresse ein und wählen Sie einen Vorschlag, das System liest die genauen GPS-Koordinaten für die PVGIS-Berechnung aus.',
+      'Die Adresse wird in GPS-Koordinaten umgerechnet und dient der Abschätzung des jährlichen PV-Ertrags. Er wird nicht gespeichert.',
 
     labelPvCapacity: 'PV-Leistung (kWp)',
     tooltipPvCapacity:
@@ -136,6 +150,18 @@ export const translations = {
       'Im klassischen Mieterstrom erhält der Vermieter/Betreiber den Mieterstromzuschlag und der Mieter bekommt einen günstigeren Tarif als vom Grundversorger. Es gilt ein gesetzlicher Deckel.',
     tooltipModelGGV:
       'Bei GGV (Gemeinschaftliche Gebäudeversorgung) nach §42b EnWG können Mieter direkt Strom aus der PV-Anlage beziehen, ohne dass der Betreiber ein Versorgungsunternehmen sein muss.',
+
+    // Tab 3 Optimization
+    sectionOptimize: 'Optimierungsregler',
+    optimizeDescription:
+      'Die zwei wichtigsten Stellschrauben für den Business Case – Änderungen wirken sofort auf alle Kennzahlen.',
+    labelOptTenantRate: 'Verkaufspreis an Mieter',
+    labelOptBattery: 'Batteriespeicher',
+    noBattery: 'Kein Speicher',
+    tooltipOptTenantRate:
+      'Der Verkaufspreis ist der stärkste Hebel für die Einnahmen: jeder Cent mehr multipliziert sich mit der gesamten verkauften Strommenge. Er muss jedoch mindestens 10 % unter dem lokalen Grundversorger-Tarif liegen.',
+    tooltipOptBattery:
+      'Ein größerer Speicher erhöht den Eigenverbrauchsanteil und damit die verkaufte Menge an Mieterstrom – hat aber auch Einfluss auf den CAPEX. Prüfen Sie, ob die Mehrinvestition durch die Mehrerträge gedeckt wird.',
   },
 
   en: {
@@ -144,18 +170,32 @@ export const translations = {
     appSubtitle: 'Interactive simulation model for real estate',
 
     // KPI Labels
-    kpiYield: 'Power Generation (PVGIS)',
+    kpiYield: 'PV Energy Generation',
     kpiAutarky: 'Autarky Rate',
-    kpiSelfConsumption: 'Self-cons.',
+    kpiSelfConsumption: 'Self-consumption Rate',
     kpiLcoe: 'LCOE (Levelized Cost of Electricity)',
     kpiAmortization: 'Payback Period',
     kpiRoi: 'ROI',
     kpiYears: 'Years',
+    tooltipKpiYield:
+      'Estimated annual gross PV yield based on EU satellite data (PVGIS simulation). Depends on location, system capacity, tilt angle, and system losses.',
+    tooltipKpiAutarky:
+      'Approximate share of total electricity demand covered by direct PV consumption incl. battery storage. The higher the autarky rate, the less energy is drawn from the grid.',
+    tooltipKpiSelfConsumption:
+      'Share of generated PV electricity consumed directly in the building (incl. battery storage). Higher means less surplus is fed into the grid.',
+    tooltipKpiLcoe:
+      'Calculated Levelized Cost of Electricity: total system costs over its lifetime (CAPEX + OPEX + interest) divided by the total energy generated.',
+    tooltipKpiAmortization:
+      'The year in which the system is fully paid off (break-even point). After that, only operating costs (software, maintenance) need to be covered – the rest remains as surplus.',
+    tooltipKpiRoi:
+      'Return on Investment: total net revenue over the calculation period relative to the equity invested (CAPEX − loan amount). Indicates the return on equity.',
 
     // Tabs
     tab1: '1. Technical Data',
-    tab2: '2. Economics',
-    tab3: '3. Results & Charts',
+    tab2: '2. Economic Data',
+    tab3: '3. Results',
+
+    btnNext: 'Next',
 
     // Loading
     loading: 'Calculating...',
@@ -273,6 +313,18 @@ export const translations = {
       'In classic tenant electricity, the landlord/operator receives the tenant electricity subsidy and the tenant gets a cheaper tariff than from the grid provider. A legal cap applies.',
     tooltipModelGGV:
       'With GGV (communal building supply) under §42b EnWG, tenants can direct consume electricity from the PV system without the operator needing to be a utility company.',
+
+    // Tab 3 Optimization
+    sectionOptimize: 'Optimization Controls',
+    optimizeDescription:
+      'The two key levers for the business case – changes take effect immediately on all metrics.',
+    labelOptTenantRate: 'Tenant Sales Price',
+    labelOptBattery: 'Battery Storage',
+    noBattery: 'No storage',
+    tooltipOptTenantRate:
+      'The sales price is the strongest revenue lever: every extra cent multiplies across the total electricity sold. It must remain at least 10% below the local utility tariff.',
+    tooltipOptBattery:
+      'A larger battery increases self-consumption and therefore the volume of tenant electricity sold — but also affects CAPEX. Check whether the additional revenue justifies the extra investment.',
   },
 } as const;
 

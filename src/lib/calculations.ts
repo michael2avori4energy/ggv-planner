@@ -21,7 +21,8 @@ export async function fetchPvgisYield(system: SystemParams): Promise<number> {
   }
 
   try {
-    const url = `https://re.jrc.ec.europa.eu/api/v5_2/PVcalc?lat=${locationLat}&lon=${locationLon}&peakpower=${pvCapacityKwp}&loss=${systemLoss}&angle=${inclination}&aspect=${azimuth}&outputformat=json`;
+    const pvgisBase = import.meta.env.VITE_PVGIS_BASE_URL ?? '/pvgis-api/api/v5_2';
+    const url = `${pvgisBase}/PVcalc?lat=${locationLat}&lon=${locationLon}&peakpower=${pvCapacityKwp}&loss=${systemLoss}&angle=${inclination}&aspect=${azimuth}&outputformat=json`;
     const response = await fetch(url);
     const data = await response.json();
 

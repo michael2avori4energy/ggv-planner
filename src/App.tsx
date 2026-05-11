@@ -5,8 +5,8 @@ const AppInner = () => {
   const { lang, setLang, t } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 md:p-8 font-sans">
-      <div className="max-w-7xl mx-auto mb-6 flex items-start justify-between">
+    <div className="min-h-screen bg-slate-100 px-4 md:px-8 py-4 md:py-6 font-sans">
+      <div className="w-full mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
             {lang === 'de' ? 'Mieterstrom' : 'Tenant Electricity'}{' '}

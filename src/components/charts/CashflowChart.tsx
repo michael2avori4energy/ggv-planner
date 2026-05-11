@@ -2,6 +2,7 @@ import React from 'react';
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -14,12 +15,15 @@ import { YearlyCashflow } from '../../types';
 
 interface CashflowChartProps {
   data: YearlyCashflow[];
+  selectedIndex?: number;
   onBarClick?: (index: number) => void;
 }
 
-export const CashflowChart: React.FC<CashflowChartProps> = ({ data, onBarClick }) => {
+export const CashflowChart: React.FC<CashflowChartProps> = ({ data, selectedIndex, onBarClick }) => {
+  const opacity = (idx: number) => (selectedIndex === undefined || idx === selectedIndex ? 1 : 0.35);
+
   return (
-    <div className="h-96 w-full">
+    <div className="h-[460px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
@@ -53,9 +57,21 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data, onBarClick }
           <Legend />
           <ReferenceLine y={0} stroke="#94a3b8" />
 
-          <Bar dataKey="totalRevenue" name="Einnahmen p.a." fill="#3b82f6" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="opex" name="Betriebskosten (OPEX)" fill="#94a3b8" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="loanInstallment" name="Annuität" fill="#cbd5e1" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="totalRevenue" name="Einnahmen p.a." fill="#3b82f6" radius={[4, 4, 0, 0]}>
+            {data.map((_, idx) => (
+              <Cell key={idx} fill="#3b82f6" fillOpacity={opacity(idx)} />
+            ))}
+          </Bar>
+          <Bar dataKey="opex" name="Betriebskosten (OPEX)" fill="#94a3b8" radius={[4, 4, 0, 0]}>
+            {data.map((_, idx) => (
+              <Cell key={idx} fill="#94a3b8" fillOpacity={opacity(idx)} />
+            ))}
+          </Bar>
+          <Bar dataKey="loanInstallment" name="Annuität" fill="#cbd5e1" radius={[4, 4, 0, 0]}>
+            {data.map((_, idx) => (
+              <Cell key={idx} fill="#cbd5e1" fillOpacity={opacity(idx)} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
