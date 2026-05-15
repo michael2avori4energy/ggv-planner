@@ -1,6 +1,6 @@
 import React from 'react';
 import { EnergyResults, EconomicResults } from '../types';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
 import { Tooltip } from './Tooltip';
 
 interface KPIDisplayProps {

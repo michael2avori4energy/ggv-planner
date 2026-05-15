@@ -1,4 +1,5 @@
-import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
+import { LanguageProvider } from './i18n/LanguageContext';
+import { useLanguage } from './i18n/useLanguage';
 import { Configurator } from './components/Configurator';
 
 const GitHubIcon = () => (

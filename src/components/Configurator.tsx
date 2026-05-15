@@ -15,7 +15,7 @@ import { TenantSavingsChart } from './charts/TenantSavingsChart';
 import { Tooltip } from './Tooltip';
 import { BreakdownModal } from './BreakdownModal';
 import { AddressAutocomplete } from './AddressAutocomplete';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage } from '../i18n/useLanguage';
 import {
   Calculator,
   Battery,
@@ -80,15 +80,19 @@ export const Configurator: React.FC = () => {
     interestRate: 4.5,
   });
 
-  const [loanPercentage, setLoanPercentage] = useState(
-    Math.round((50000 / 75000) * 100)
-  );
+  const [loanPercentage, setLoanPercentage] = useState(Math.round((50000 / 75000) * 100));
 
   const [capexBreakdown, setCapexBreakdown] = useState<Record<string, number>>({
-    pvSystem: 0, battery: 0, installation: 0, consulting: 0, other: 0,
+    pvSystem: 0,
+    battery: 0,
+    installation: 0,
+    consulting: 0,
+    other: 0,
   });
   const [opexBreakdown, setOpexBreakdown] = useState<Record<string, number>>({
-    techManagement: 0, billing: 0, adminManagement: 0,
+    techManagement: 0,
+    billing: 0,
+    adminManagement: 0,
   });
   const [showCapexModal, setShowCapexModal] = useState(false);
   const [showOpexModal, setShowOpexModal] = useState(false);
@@ -144,7 +148,7 @@ export const Configurator: React.FC = () => {
   useEffect(() => {
     setFinancing((prev) => ({
       ...prev,
-      loanAmount: Math.round(economics.capex * loanPercentage / 100),
+      loanAmount: Math.round((economics.capex * loanPercentage) / 100),
     }));
   }, [economics.capex, loanPercentage]);
 
@@ -158,6 +162,7 @@ export const Configurator: React.FC = () => {
         participationRate: consumption.participationRate,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const inputClass =
@@ -1003,7 +1008,9 @@ export const Configurator: React.FC = () => {
                       <h3 className="font-semibold text-slate-700 mb-1 text-center text-sm">
                         {t.chartTenantSavingsTitle}
                       </h3>
-                      <p className="text-xs text-slate-400 mb-2 text-center">{t.chartTenantSavingsSubtitle}</p>
+                      <p className="text-xs text-slate-400 mb-2 text-center">
+                        {t.chartTenantSavingsSubtitle}
+                      </p>
                       <TenantSavingsChart
                         consumptionPerApartmentKwh={consumption.consumptionPerApartmentKwh}
                         gridElectricityRate={economics.gridElectricityRate}
@@ -1170,10 +1177,26 @@ export const Configurator: React.FC = () => {
         unit="€"
         step={500}
         items={[
-          { key: 'pvSystem', label: t.breakdownCapexPvSystem, tooltip: t.tooltipBreakdownCapexPvSystem },
-          { key: 'battery', label: t.breakdownCapexBattery, tooltip: t.tooltipBreakdownCapexBattery },
-          { key: 'installation', label: t.breakdownCapexInstallation, tooltip: t.tooltipBreakdownCapexInstallation },
-          { key: 'consulting', label: t.breakdownCapexConsulting, tooltip: t.tooltipBreakdownCapexConsulting },
+          {
+            key: 'pvSystem',
+            label: t.breakdownCapexPvSystem,
+            tooltip: t.tooltipBreakdownCapexPvSystem,
+          },
+          {
+            key: 'battery',
+            label: t.breakdownCapexBattery,
+            tooltip: t.tooltipBreakdownCapexBattery,
+          },
+          {
+            key: 'installation',
+            label: t.breakdownCapexInstallation,
+            tooltip: t.tooltipBreakdownCapexInstallation,
+          },
+          {
+            key: 'consulting',
+            label: t.breakdownCapexConsulting,
+            tooltip: t.tooltipBreakdownCapexConsulting,
+          },
           { key: 'other', label: t.breakdownCapexOther, tooltip: t.tooltipBreakdownCapexOther },
         ]}
         values={capexBreakdown}
@@ -1195,9 +1218,17 @@ export const Configurator: React.FC = () => {
         unit="€"
         step={50}
         items={[
-          { key: 'techManagement', label: t.breakdownOpexTechManagement, tooltip: t.tooltipBreakdownOpexTechManagement },
+          {
+            key: 'techManagement',
+            label: t.breakdownOpexTechManagement,
+            tooltip: t.tooltipBreakdownOpexTechManagement,
+          },
           { key: 'billing', label: t.breakdownOpexBilling, tooltip: t.tooltipBreakdownOpexBilling },
-          { key: 'adminManagement', label: t.breakdownOpexAdminManagement, tooltip: t.tooltipBreakdownOpexAdminManagement },
+          {
+            key: 'adminManagement',
+            label: t.breakdownOpexAdminManagement,
+            tooltip: t.tooltipBreakdownOpexAdminManagement,
+          },
         ]}
         values={opexBreakdown}
         totalLabel={t.breakdownTotal}

@@ -18,8 +18,13 @@ interface CashflowChartProps {
   onBarClick?: (index: number) => void;
 }
 
-export const CashflowChart: React.FC<CashflowChartProps> = ({ data, selectedIndex, onBarClick }) => {
-  const opacity = (idx: number) => (selectedIndex === undefined || idx === selectedIndex ? 1 : 0.35);
+export const CashflowChart: React.FC<CashflowChartProps> = ({
+  data,
+  selectedIndex,
+  onBarClick,
+}) => {
+  const opacity = (idx: number) =>
+    selectedIndex === undefined || idx === selectedIndex ? 1 : 0.35;
 
   return (
     <div className="h-[460px] w-full">
@@ -69,7 +74,13 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data, selectedInde
               <Cell key={idx} fill="#94a3b8" fillOpacity={opacity(idx)} />
             ))}
           </Bar>
-          <Bar dataKey="loanInstallment" name="Annuität" stackId="costs" fill="#64748b" radius={[4, 4, 0, 0]}>
+          <Bar
+            dataKey="loanInstallment"
+            name="Annuität"
+            stackId="costs"
+            fill="#64748b"
+            radius={[4, 4, 0, 0]}
+          >
             {data.map((_, idx) => (
               <Cell key={idx} fill="#64748b" fillOpacity={opacity(idx)} />
             ))}

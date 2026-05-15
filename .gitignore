@@ -20,3 +20,4 @@ npm-debug.log*
 # AI Agent context (local only, not for version control)
 agent_context
 .env
+tsconfig.tsbuildinfo

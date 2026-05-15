@@ -52,13 +52,13 @@ export const TenantSavingsChart: React.FC<TenantSavingsChartProps> = ({
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
           <XAxis dataKey="label" axisLine={false} tickLine={false} />
-          <YAxis
-            tickFormatter={(val) => `${val.toFixed(0)} €`}
-            axisLine={false}
-            tickLine={false}
-          />
+          <YAxis tickFormatter={(val) => `${val.toFixed(0)} €`} axisLine={false} tickLine={false} />
           <Tooltip
-            formatter={(value: number, _name: string, props: { payload?: { consumptionKwh?: number } }) => {
+            formatter={(
+              value: number,
+              _name: string,
+              props: { payload?: { consumptionKwh?: number } }
+            ) => {
               const kwh = props.payload?.consumptionKwh ?? 0;
               return [`${value.toFixed(2)} € (${kwh.toFixed(0)} kWh/WE)`, 'Ersparnis p.a.'];
             }}
