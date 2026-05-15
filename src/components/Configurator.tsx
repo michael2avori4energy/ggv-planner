@@ -11,6 +11,7 @@ import { fetchPvgisYield, calculateEnergyYield, calculateEconomics } from '../li
 import { KPIDisplay } from './KPIDisplay';
 import { EnergyMixChart } from './charts/EnergyMixChart';
 import { CashflowChart } from './charts/CashflowChart';
+import { TenantSavingsChart } from './charts/TenantSavingsChart';
 import { Tooltip } from './Tooltip';
 import { BreakdownModal } from './BreakdownModal';
 import { AddressAutocomplete } from './AddressAutocomplete';
@@ -975,7 +976,7 @@ export const Configurator: React.FC = () => {
 
               {ecoResults.cashflowPlan.length > 0 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                  <div className="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center self-start">
+                  <div className="lg:col-span-1 bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center">
                     <h3 className="font-semibold text-slate-700 mb-4 text-center">
                       {t.chartEnergyTitle}
                     </h3>
@@ -997,6 +998,17 @@ export const Configurator: React.FC = () => {
                           {energy.gridExportKwh.toFixed(0)} kWh
                         </span>
                       </div>
+                    </div>
+                    <div className="mt-6 w-full border-t border-slate-200 pt-4">
+                      <h3 className="font-semibold text-slate-700 mb-1 text-center text-sm">
+                        {t.chartTenantSavingsTitle}
+                      </h3>
+                      <p className="text-xs text-slate-400 mb-2 text-center">{t.chartTenantSavingsSubtitle}</p>
+                      <TenantSavingsChart
+                        consumptionPerApartmentKwh={consumption.consumptionPerApartmentKwh}
+                        gridElectricityRate={economics.gridElectricityRate}
+                        tenantElectricityRate={economics.tenantElectricityRate}
+                      />
                     </div>
                   </div>
 
