@@ -5,6 +5,9 @@ export const translations = {
     // App header
     appTitle: 'Mieterstrom & GGV Planner',
     appSubtitle: 'Interaktives Simulationsmodell für Immobilien',
+    openSource: 'Open Source',
+    projectOnGithub: 'GGV-Planner @ Github',
+    myWebsite: 'Meine Website',
 
     // KPI Labels
     kpiYield: 'PV Energieerzeugung',
@@ -179,7 +182,8 @@ export const translations = {
     chartEnergyTitle: 'Jahres-Energiebilanz',
     chartCashflowTitle: 'Cashflow-Entwicklung über {years} Jahre',
     chartTenantSavingsTitle: 'Mieter-Ersparnis gegenüber Grundversorger (pro WE/Jahr)',
-    chartTenantSavingsSubtitle: 'Ersparnis = (Referenzpreis Netz − Verkaufspreis Mieter) × Verbrauch/WE',
+    chartTenantSavingsSubtitle:
+      'Ersparnis = (Referenzpreis Netz − Verkaufspreis Mieter) × Verbrauch/WE',
     labelPvYield: 'PV-Erzeugung:',
     labelTotalConsumption: 'Gesamtbedarf:',
     labelGridExport: 'Netzeinspeisung:',
@@ -224,6 +228,9 @@ export const translations = {
     // App header
     appTitle: 'Tenant Electricity & GGV Planner',
     appSubtitle: 'Interactive simulation model for real estate',
+    openSource: 'Open Source',
+    projectOnGithub: 'GGV-Planner @ Github',
+    myWebsite: 'My Website',
 
     // KPI Labels
     kpiYield: 'PV Energy Generation',
@@ -398,7 +405,8 @@ export const translations = {
     chartEnergyTitle: 'Annual Energy Balance',
     chartCashflowTitle: 'Cashflow Development over {years} Years',
     chartTenantSavingsTitle: 'Tenant Savings vs. Grid Supplier (per unit/year)',
-    chartTenantSavingsSubtitle: 'Savings = (Grid reference price − Tenant sales price) × Consumption/unit',
+    chartTenantSavingsSubtitle:
+      'Savings = (Grid reference price − Tenant sales price) × Consumption/unit',
     labelPvYield: 'PV Generation:',
     labelTotalConsumption: 'Total Demand:',
     labelGridExport: 'Grid Export:',
