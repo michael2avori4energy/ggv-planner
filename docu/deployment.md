@@ -104,6 +104,28 @@ VITE_PVGIS_BASE_URL=https://deine-domain.de/pvgis-api/api/v5_2 npm run build
 
 ---
 
+### Codequalität: Linter & Formatter
+
+Das Projekt verwendet **ESLint** (Linter) und **Prettier** (Formatter).
+
+| Befehl | Beschreibung |
+|---|---|
+| `npm run lint` | ESLint ausführen – zeigt Fehler und Warnungen an |
+| `npm run format` | Prettier formatiert alle Dateien in `src/` automatisch |
+| `npm run format:check` | Prettier nur prüfen, ohne Dateien zu ändern |
+| `npm run typecheck` | TypeScript-Typen prüfen (`tsc --noEmit`) |
+| `npm run check-all` | Alle Prüfungen kombiniert (typecheck + lint + format:check) |
+| `npm run fix-all` | Prettier formatieren + ESLint auto-fix |
+
+**Empfohlener Workflow vor einem Commit:**
+
+```bash
+npm run fix-all    # Prettier + ESLint auto-fix anwenden
+npm run check-all  # Alle Prüfungen abschließend ausführen
+```
+
+---
+
 <a name="english"></a>
 ## 🇺🇸 English
 
@@ -200,4 +222,26 @@ Set `VITE_PVGIS_BASE_URL` at build time to your public proxy URL, e.g.:
 
 ```bash
 VITE_PVGIS_BASE_URL=https://your-domain.com/pvgis-api/api/v5_2 npm run build
+```
+
+---
+
+### Code Quality: Linter & Formatter
+
+The project uses **ESLint** (linter) and **Prettier** (formatter).
+
+| Command | Description |
+|---|---|
+| `npm run lint` | Run ESLint – reports errors and warnings |
+| `npm run format` | Prettier auto-formats all files in `src/` |
+| `npm run format:check` | Check formatting without modifying files |
+| `npm run typecheck` | Check TypeScript types (`tsc --noEmit`) |
+| `npm run check-all` | All checks combined (typecheck + lint + format:check) |
+| `npm run fix-all` | Apply Prettier formatting + ESLint auto-fix |
+
+**Recommended workflow before committing:**
+
+```bash
+npm run fix-all    # Apply Prettier + ESLint auto-fixes
+npm run check-all  # Run all checks to verify
 ```
