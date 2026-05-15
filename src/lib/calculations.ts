@@ -43,14 +43,16 @@ export function calculateEnergyYield(
   system: SystemParams,
   consumption: ConsumptionParams
 ): EnergyResults {
-  // Gesamtverbrauch berechnen
+  // Gesamtverbrauch berechnen (nur teilnehmende WE fließen in das Modell ein)
   const totalConsumptionKwh =
-    consumption.apartments * consumption.consumptionPerApartmentKwh +
+    consumption.apartments *
+      consumption.consumptionPerApartmentKwh *
+      consumption.participationRate +
     (consumption.hasHeatPump ? consumption.heatPumpConsumptionKwh : 0) +
     (consumption.hasEvCharging
       ? consumption.evChargingPoints * consumption.evChargingConsumptionPerPointKwh
       : 0) +
-    consumption.generalConsumptionKwh;
+    (consumption.hasGeneralConsumption ? consumption.generalConsumptionKwh : 0);
 
   if (totalConsumptionKwh === 0) {
     return {
@@ -80,7 +82,7 @@ export function calculateEnergyYield(
   }
 
   // Cap bei realistischen Maxima (zusammen max ca. 80-85% ohne Saisonspeicher) und physikalischem Limit
-  let totalRate = Math.min(pvDirectConsumptionRate + batteryDischargeRate, 0.85);
+  const totalRate = Math.min(pvDirectConsumptionRate + batteryDischargeRate, 0.85);
   pvDirectConsumptionRate = Math.min(pvDirectConsumptionRate, 0.85);
   batteryDischargeRate = Math.min(batteryDischargeRate, totalRate - pvDirectConsumptionRate);
 
@@ -183,7 +185,8 @@ export function calculateEconomics(
 
     // Spezifische Mieterstrom-Einnahmen
     if (economics.model === 'Mieterstrom') {
-      revenueBaseFee = consumption.apartments * economics.baseFeePerMonth * 12;
+      revenueBaseFee =
+        consumption.apartments * consumption.participationRate * economics.baseFeePerMonth * 12;
       revenueSubsidy = energy.selfConsumptionKwh * (economics.tenantElectricitySubsidy / 100);
     }
 

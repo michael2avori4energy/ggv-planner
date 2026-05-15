@@ -5,6 +5,9 @@ export const translations = {
     // App header
     appTitle: 'Mieterstrom & GGV Planner',
     appSubtitle: 'Interaktives Simulationsmodell für Immobilien',
+    openSource: 'Open Source',
+    projectOnGithub: 'GGV-Planner @ Github',
+    myWebsite: 'Meine Website',
 
     // KPI Labels
     kpiYield: 'PV Energieerzeugung',
@@ -37,6 +40,11 @@ export const translations = {
     // Loading
     loading: 'Berechne...',
 
+    // Expert hint banner (Tab 1 + Tab 2)
+    infoExpertHint:
+      'Dieses Tool setzt grundlegendes Verständnis der verwendeten Fachbegriffe voraus. Wir empfehlen, sich auf offiziellen Seiten zu informieren:',
+    infoExpertLinkLabel: 'Informationen der Bundesnetzagentur',
+
     // Tab 1: Technical
     tab1Title: 'Technische Konfiguration',
     sectionPV: 'Photovoltaik-Anlage',
@@ -46,7 +54,7 @@ export const translations = {
     placeholderAddress: 'z.B. Berlin, Deutschland',
     addressCoords: 'Breite: {lat}, Länge: {lon}',
     tooltipAddress:
-      'Die Adresse wird in GPS-Koordinaten umgerechnet und dient der Abschätzung des jährlichen PV-Ertrags. Er wird nicht gespeichert.',
+      'Die Adresse wird in GPS-Koordinaten umgerechnet und dient der Abschätzung des jährlichen PV-Ertrags. Sie wird nicht gespeichert.',
 
     labelPvCapacity: 'PV-Leistung (kWp)',
     tooltipPvCapacity:
@@ -61,20 +69,28 @@ export const translations = {
     tooltipApartments:
       'Anzahl der angeschlossenen Mietparteien. Je mehr Wohneinheiten, desto größer der Gesamtstromverbrauch.',
 
+    labelParticipationRate: 'Teilnehmerquote WE',
+    tooltipParticipationRate:
+      'Anteil der Wohneinheiten, die aktiv am Mieterstrom- bzw. GGV-Modell teilnehmen. Nicht alle Mieter wollen teilnehmen. Erfahrungswerte liegen bei 60-80%.',
+
     labelConsumptionPerApartment: 'Verbrauch/WE (kWh)',
     tooltipConsumptionPerApartment:
       'Durchschnittlicher Jahresstromverbrauch pro Wohneinheit. Typisch: 2.000–3.500 kWh/a für Haushalte ohne Wärmenutzung.',
 
-    labelHeatPump: 'Wärmepumpe Gesamtverbrauch (kWh/a)',
+    labelHeatPump: 'Wärmepumpe: gesamter, elektr. Energiebedarf (kWh/a)',
     tooltipHeatPump:
-      'Gesamter Jahresstromverbrauch aller Wärmepumpen im Gebäude. Eine Luft-Wasser-WP benötigt ca. 3.000–8.000 kWh/a.',
+      'Der elektr. Energiebedarf ist sehr inviduell und hängt vom Gebäude, der Größe von Wohnung und Wärmepumpe so Verhalter der Bewohner ab. Richtwert: 1.500-5.000 kWh/a und Wohnung.',
 
-    labelEV: 'E-Mobilität (Wallboxen) (kWh/a)',
+    labelEV: 'E-Mobilität: Wallboxen & elektr. Energiebedarf (kWh/a)',
     labelEVCount: 'Anzahl Wallboxen',
     labelEVConsumptionPerPointKwh: 'jährl. kWh pro Ladepunkt',
 
     tooltipEV:
-      'Gesamter Jahresstromverbrauch für das Laden von Elektrofahrzeugen. Ca. 2.000–4.000 kWh/a pro Fahrzeug.',
+      'Gesamter Jahresstromverbrauch für das Laden von Elektrofahrzeugen. Ca. 2.000 kWh/a pro Fahrzeug (bei 20kWh/100km und jährl. Fahrleistung von 10.000km).',
+
+    labelGeneralConsumption: 'Allgemeinstrom (kWh/a)',
+    tooltipGeneralConsumption:
+      'Stromverbrauch für gemeinschaftlich genutzte Bereiche wie Treppenhaus, Keller, Außenbeleuchtung oder Aufzug. Typisch: 1.000–5.000 kWh/a je nach Gebäudegröße.',
 
     // Tab 2: Economic
     tab2Title: 'Wirtschaftliche Parameter',
@@ -90,7 +106,7 @@ export const translations = {
 
     labelFeedIn: 'Einspeisevergütung (ct)',
     tooltipFeedIn:
-      'EEG-Einspeisevergütung für ins Netz eingespeisten Überschussstrom. Dieser Wert wird regelmäßig von der Bundesnetzagentur angepasst.',
+      'Vergütung für nicht im Gebäude verbrauchten Strom. Dies kann die EEG-Einspeisevergütung sein, aber auch Direktvermarkung (PPA) oder Energie-Sharing mit Nachbargebäuden. EEG-Vergütung in 2026: 5-7 ct/kWh, je nach Anlagengröße.',
 
     labelBaseFee: 'Messentgelt/Grundgebühr (€/Mo)',
     tooltipBaseFee:
@@ -98,19 +114,57 @@ export const translations = {
 
     labelSubsidy: 'Mieterstromzuschlag (ct)',
     tooltipSubsidy:
-      'Staatliche Förderung pro kWh an Mieter geliefertem Strom (gemäß § 21 EEG). Wird regelmäßig angepasst und variiert je nach Anlagengröße.',
+      'Staatliche Förderung pro kWh an Mieter geliefertem Strom (gemäß § 21 EEG). Wird regelmäßig angepasst und variiert je nach Anlagengröße - in 2026: 1,59ct/kWh - 2.57ct/kWh.',
 
     labelGridRate: 'Referenzpreis Netz (ct/kWh)',
     tooltipGridRate:
-      'Lokaler Grundversorger-Tarif als Referenz. Wird u.a. zur Berechnung der Mietereinsparungen verwendet.',
+      'Lokaler Grundversorger-Tarif als Referenz. Dieser muss min. 10% über dem Verkaufspreis an Mieter liegen. Wird im Tool u.a. zur Berechnung der Mietereinsparungen verwendet.',
 
-    labelCapex: 'CAPEX (€ netto)',
+    labelCapex: 'Investmentkosten CAPEX (€ netto)',
     tooltipCapex:
       'Gesamte Investitionskosten der Anlage (Netto, ohne MwSt.). Inkl. Module, Wechselrichter, Montage, Elektrik und ggf. Speicher.',
 
-    labelOpex: 'OPEX (€ pro Jahr)',
+    labelOpex: 'Betriebskosten OPEX (€ pro Jahr)',
     tooltipOpex:
       'Jährliche Betriebskosten: Wartung, Versicherung, Zählerabrechnung, Softwaregebühren, etc. Typisch: 1–2% des CAPEX p.a.',
+
+    // Breakdown modal – shared UI
+    breakdownOpen: 'Kosten aufschlüsseln',
+    breakdownApply: 'Übernehmen',
+    breakdownCancel: 'Abbrechen',
+    breakdownTotal: 'Gesamtbetrag',
+    breakdownHint:
+      'Geben Sie die Einzelpositionen ein. Der berechnete Gesamtbetrag wird in das Eingabefeld übernommen.',
+    breakdownCapexTitle: 'Investitionskosten aufschlüsseln',
+    breakdownOpexTitle: 'Betriebskosten aufschlüsseln',
+
+    // Breakdown modal – CAPEX items
+    breakdownCapexPvSystem: 'PV-Anlage inkl. Wechselrichter',
+    tooltipBreakdownCapexPvSystem:
+      'Kosten für PV-Module, Wechselrichter und deren direkte Montage. Richtwert: 800–1.200 €/kWp je nach Anlagengröße.',
+    breakdownCapexBattery: 'Batteriespeicher',
+    tooltipBreakdownCapexBattery:
+      'Anschaffungs- und Installationskosten des Batteriespeichers inkl. Inbetriebnahme. Richtwert: 700–1.200 €/kWh Speicherkapazität.',
+    breakdownCapexInstallation: 'Installation & Infrastruktur',
+    tooltipBreakdownCapexInstallation:
+      'Elektroinstallation, Zählerinfrastruktur (Unterzähler, Messkonzept), Kabelwege und Unterverteiler.',
+    breakdownCapexConsulting: 'Beratung & Planungskosten',
+    tooltipBreakdownCapexConsulting:
+      'Planungsleistungen, Gutachten, rechtliche Beratung für das Mieterstrom- oder GGV-Modell sowie Kosten für Netzanmeldung.',
+    breakdownCapexOther: 'Sonstige Kosten',
+    tooltipBreakdownCapexOther:
+      'Anmeldegebühren, Genehmigungen, Rücklagen für unvorhergesehene Ausgaben oder weitere projektspezifische Posten.',
+
+    // Breakdown modal – OPEX items
+    breakdownOpexTechManagement: 'Technische Betriebsführung',
+    tooltipBreakdownOpexTechManagement:
+      'Wartung der PV-Anlage und des Batteriespeichers, Monitoring, Fernüberwachung und Entstörung. Richtwert: 0,5–1 % des CAPEX p.a.',
+    breakdownOpexBilling: 'Abrechnung',
+    tooltipBreakdownOpexBilling:
+      'Zählerablesung, Verbrauchserfassung und Jahresabrechnung an Mieter. Richtwert: 5–15 €/Zähler/Monat.',
+    breakdownOpexAdminManagement: 'Administrative Betriebsführung',
+    tooltipBreakdownOpexAdminManagement:
+      'Verwaltungsaufwand, Versicherungen (Ertrags- und Haftpflicht), Buchführung und Kommunikation mit Mietern.',
 
     labelLoanAmount: 'Kreditbetrag (€)',
     tooltipLoanAmount:
@@ -120,13 +174,16 @@ export const translations = {
     tooltipInterestRate:
       'Jährlicher Zinssatz des Investitionsdarlehens. Für Projekte dieser Art gibt es häufig günstige KfW-Förderprogramme.',
 
-    labelLoanTerm: 'Laufzeit (J)',
+    labelLoanTerm: 'Kreditlaufzeit (Jahre)',
     tooltipLoanTerm: 'Tilgungsdauer des Darlehens in Jahren. Typisch 10–20 Jahre für Solaranlagen.',
 
     // Tab 3: Results
     tab3Title: 'Ergebnisse & Analyse',
     chartEnergyTitle: 'Jahres-Energiebilanz',
     chartCashflowTitle: 'Cashflow-Entwicklung über {years} Jahre',
+    chartTenantSavingsTitle: 'Mieter-Ersparnis gegenüber Grundversorger (pro WE/Jahr)',
+    chartTenantSavingsSubtitle:
+      'Ersparnis = (Referenzpreis Netz − Verkaufspreis Mieter) × Verbrauch/WE',
     labelPvYield: 'PV-Erzeugung:',
     labelTotalConsumption: 'Gesamtbedarf:',
     labelGridExport: 'Netzeinspeisung:',
@@ -147,27 +204,33 @@ export const translations = {
 
     // Tooltip model hint
     tooltipModelMieterstrom:
-      'Im klassischen Mieterstrom erhält der Vermieter/Betreiber den Mieterstromzuschlag und der Mieter bekommt einen günstigeren Tarif als vom Grundversorger. Es gilt ein gesetzlicher Deckel.',
+      'Im Mieterstrom übernimmt der Vermieter/Betreiber die gesamte Energieversorung. Dies besteht aus PV-Strom sowie extern zugekauften Reststrom für die Zeit, wo PV & Speicher keine Energie liefern. Dafür erhält der Betreiber zusätzlich zum Arbeitspreis die Grundgebühr. Dafür muss der Preis unter dem des Grundversorgers liegen.',
     tooltipModelGGV:
-      'Bei GGV (Gemeinschaftliche Gebäudeversorgung) nach §42b EnWG können Mieter direkt Strom aus der PV-Anlage beziehen, ohne dass der Betreiber ein Versorgungsunternehmen sein muss.',
+      'Beim Gemeinschaftliche Gebäudeversorgung (GGV) erhalten Mietpartein den PV-Strom zusätzlich. In der Zeit ohne PV-Strom beziehen sie weiter Strom aus ihrem bestehenden Stromvertrag. Der Betreiber erhält für jede verkaufte kWh seinen vereinbarten Arbeitspreis.',
 
     // Tab 3 Optimization
     sectionOptimize: 'Optimierungsregler',
     optimizeDescription:
-      'Die zwei wichtigsten Stellschrauben für den Business Case – Änderungen wirken sofort auf alle Kennzahlen.',
+      'Die drei wichtigsten Stellschrauben für den Business Case – Änderungen wirken sofort auf alle Kennzahlen.',
     labelOptTenantRate: 'Verkaufspreis an Mieter',
     labelOptBattery: 'Batteriespeicher',
+    labelOptParticipation: 'Teilnehmerquote WE',
     noBattery: 'Kein Speicher',
     tooltipOptTenantRate:
       'Der Verkaufspreis ist der stärkste Hebel für die Einnahmen: jeder Cent mehr multipliziert sich mit der gesamten verkauften Strommenge. Er muss jedoch mindestens 10 % unter dem lokalen Grundversorger-Tarif liegen.',
     tooltipOptBattery:
       'Ein größerer Speicher erhöht den Eigenverbrauchsanteil und damit die verkaufte Menge an Mieterstrom – hat aber auch Einfluss auf den CAPEX. Prüfen Sie, ob die Mehrinvestition durch die Mehrerträge gedeckt wird.',
+    tooltipOptParticipation:
+      'Je höher die Teilnehmerquote, desto mehr Mieter beziehen Strom aus der Anlage – und desto höher sind Grundgebühr- und Mieterstromeinnahmen. In der Praxis liegt die Quote selten bei 100 %.',
   },
 
   en: {
     // App header
     appTitle: 'Tenant Electricity & GGV Planner',
     appSubtitle: 'Interactive simulation model for real estate',
+    openSource: 'Open Source',
+    projectOnGithub: 'GGV-Planner @ Github',
+    myWebsite: 'My Website',
 
     // KPI Labels
     kpiYield: 'PV Energy Generation',
@@ -200,6 +263,11 @@ export const translations = {
     // Loading
     loading: 'Calculating...',
 
+    // Expert hint banner (Tab 1 + Tab 2)
+    infoExpertHint:
+      'This tool assumes a basic familiarity with the technical terms used. We recommend consulting official sources:',
+    infoExpertLinkLabel: 'Information from the Federal Network Agency',
+
     // Tab 1: Technical
     tab1Title: 'Technical Configuration',
     sectionPV: 'Photovoltaic System',
@@ -209,7 +277,7 @@ export const translations = {
     placeholderAddress: 'e.g. Berlin, Germany',
     addressCoords: 'Lat: {lat}, Lon: {lon}',
     tooltipAddress:
-      'Enter an address and select a suggestion. The system will read the exact GPS coordinates for the PVGIS yield calculation.',
+      'The address is converted into GPS coordinates and used to estimate the annual PV yield. It is not stored.',
 
     labelPvCapacity: 'PV Capacity (kWp)',
     tooltipPvCapacity:
@@ -224,19 +292,27 @@ export const translations = {
     tooltipApartments:
       'Number of connected tenant units. More apartments means greater total electricity consumption.',
 
+    labelParticipationRate: 'Participation Rate',
+    tooltipParticipationRate:
+      'Share of apartments actively participating in the tenant electricity or GGV model. Not all tenants have to join – this rate affects the model-relevant consumption and base fee revenue.',
+
     labelConsumptionPerApartment: 'Consumption/unit (kWh)',
     tooltipConsumptionPerApartment:
       'Average annual electricity consumption per apartment. Typical: 2,000–3,500 kWh/year for households without heat use.',
 
-    labelHeatPump: 'Heat Pump Total Consumption (kWh/a)',
+    labelHeatPump: 'Heat Pump: Total Electrical Energy Demand (kWh/a)',
     tooltipHeatPump:
-      'Total annual electricity consumption of all heat pumps in the building. An air-to-water heat pump requires approx. 3,000–8,000 kWh/year.',
+      'The electrical energy demand is highly individual and depends on the building, apartment and heat pump size, as well as resident behavior. Reference value: 1,500–5,000 kWh/year per apartment.',
 
     labelEV: 'E-Mobility (Wallboxes) (kWh/a)',
     labelEVCount: 'Number of wallboxes',
     labelEVConsumptionPerPointKwh: 'annual kWh per charging point',
     tooltipEV:
-      'Total annual electricity consumption for electric vehicle charging. Approx. 2,000–4,000 kWh/year per vehicle.',
+      'Total annual electricity consumption for electric vehicle charging. Approx. 2,000 kWh/year per vehicle (based on 20 kWh/100 km and an annual mileage of 10,000 km).',
+
+    labelGeneralConsumption: 'Common Area Electricity (kWh/a)',
+    tooltipGeneralConsumption:
+      'Electricity for shared areas such as stairwells, basement, outdoor lighting, or elevators. Typical: 1,000–5,000 kWh/year depending on building size.',
 
     // Tab 2: Economic
     tab2Title: 'Economic Parameters',
@@ -252,7 +328,7 @@ export const translations = {
 
     labelFeedIn: 'Feed-in Tariff (ct)',
     tooltipFeedIn:
-      'EEG compensation for surplus power fed into the grid. This value is regularly adjusted by the Federal Network Agency.',
+      'Compensation for electricity not consumed in the building. This can be the EEG feed-in tariff, but also direct marketing (PPA) or energy sharing with neighboring buildings. EEG feed-in tariff in 2026: 5–7 ct/kWh, depending on system size.',
 
     labelBaseFee: 'Metering/Base Fee (€/mo)',
     tooltipBaseFee:
@@ -260,11 +336,11 @@ export const translations = {
 
     labelSubsidy: 'Tenant Electricity Subsidy (ct)',
     tooltipSubsidy:
-      'Government subsidy per kWh delivered to tenants (§21 EEG). Regularly adjusted and varies by system size.',
+      'Government subsidy per kWh delivered to tenants (§21 EEG). Regularly adjusted and varies by system size – in 2026: 1.59 ct/kWh – 2.57 ct/kWh.',
 
     labelGridRate: 'Grid Reference Price (ct/kWh)',
     tooltipGridRate:
-      'Local utility tariff as a reference. Used to calculate tenant savings and benchmark against the system.',
+      'Local utility tariff as a reference. It must be at least 10% above the tenant sales price. Used in the tool to calculate tenant savings, among other things.',
 
     labelCapex: 'CAPEX (€ net)',
     tooltipCapex:
@@ -274,6 +350,44 @@ export const translations = {
     tooltipOpex:
       'Annual operating costs: maintenance, insurance, metering, billing, software fees, etc. Typically 1–2% of CAPEX per year.',
 
+    // Breakdown modal – shared UI
+    breakdownOpen: 'Break down',
+    breakdownApply: 'Apply',
+    breakdownCancel: 'Cancel',
+    breakdownTotal: 'Total',
+    breakdownHint:
+      'Enter the individual cost items. The calculated total will be applied to the input field.',
+    breakdownCapexTitle: 'Break down investment costs',
+    breakdownOpexTitle: 'Break down operating costs',
+
+    // Breakdown modal – CAPEX items
+    breakdownCapexPvSystem: 'PV System incl. Inverter',
+    tooltipBreakdownCapexPvSystem:
+      'Costs for PV modules, inverters, and direct mounting. Reference: 800–1,200 €/kWp depending on system size.',
+    breakdownCapexBattery: 'Battery Storage',
+    tooltipBreakdownCapexBattery:
+      'Purchase and installation costs for battery storage incl. commissioning. Reference: 700–1,200 €/kWh of storage capacity.',
+    breakdownCapexInstallation: 'Installation & Infrastructure',
+    tooltipBreakdownCapexInstallation:
+      'Electrical installation, metering infrastructure (sub-meters, measurement concept), cable routes, and distribution boards.',
+    breakdownCapexConsulting: 'Consulting & Planning',
+    tooltipBreakdownCapexConsulting:
+      'Planning services, expert reports, legal advice for the tenant electricity or GGV model, and grid connection registration costs.',
+    breakdownCapexOther: 'Other Costs',
+    tooltipBreakdownCapexOther:
+      'Registration fees, permits, contingency reserves for unexpected expenses, or other project-specific items.',
+
+    // Breakdown modal – OPEX items
+    breakdownOpexTechManagement: 'Technical Operations',
+    tooltipBreakdownOpexTechManagement:
+      'Maintenance of the PV system and battery storage, monitoring, remote surveillance, and fault clearance. Reference: 0.5–1% of CAPEX p.a.',
+    breakdownOpexBilling: 'Billing & Metering',
+    tooltipBreakdownOpexBilling:
+      'Meter reading, consumption tracking, and annual billing per apartment. Reference: 5–15 €/meter/month.',
+    breakdownOpexAdminManagement: 'Administrative Operations',
+    tooltipBreakdownOpexAdminManagement:
+      'Administrative overhead, insurance (yield and liability), accounting, and tenant communication.',
+
     labelLoanAmount: 'Loan Amount (€)',
     tooltipLoanAmount:
       'The debt-financed portion of investment costs. The remainder is equity capital to be provided.',
@@ -282,7 +396,7 @@ export const translations = {
     tooltipInterestRate:
       'Annual interest rate of the investment loan. Favorable KfW funding programs are often available for projects like this.',
 
-    labelLoanTerm: 'Term (years)',
+    labelLoanTerm: 'Credit Term (years)',
     tooltipLoanTerm:
       'Loan repayment period in years. Typically 10–20 years for solar installations.',
 
@@ -290,6 +404,9 @@ export const translations = {
     tab3Title: 'Results & Analysis',
     chartEnergyTitle: 'Annual Energy Balance',
     chartCashflowTitle: 'Cashflow Development over {years} Years',
+    chartTenantSavingsTitle: 'Tenant Savings vs. Grid Supplier (per unit/year)',
+    chartTenantSavingsSubtitle:
+      'Savings = (Grid reference price − Tenant sales price) × Consumption/unit',
     labelPvYield: 'PV Generation:',
     labelTotalConsumption: 'Total Demand:',
     labelGridExport: 'Grid Export:',
@@ -310,21 +427,24 @@ export const translations = {
 
     // Tooltip model hint
     tooltipModelMieterstrom:
-      'In classic tenant electricity, the landlord/operator receives the tenant electricity subsidy and the tenant gets a cheaper tariff than from the grid provider. A legal cap applies.',
+      'In tenant electricity, the landlord/operator takes over the entire energy supply. This consists of PV electricity plus externally purchased residual electricity for times when PV and storage provide no energy. The operator receives a base fee in addition to the per-unit price. The tariff must remain below the local utility rate.',
     tooltipModelGGV:
-      'With GGV (communal building supply) under §42b EnWG, tenants can direct consume electricity from the PV system without the operator needing to be a utility company.',
+      'With communal building supply (GGV), tenants receive PV electricity as an add-on. During times without PV generation, they continue to draw electricity from their existing supply contract. The operator receives the agreed per-unit price for each kWh sold.',
 
     // Tab 3 Optimization
     sectionOptimize: 'Optimization Controls',
     optimizeDescription:
-      'The two key levers for the business case – changes take effect immediately on all metrics.',
+      'The three key levers for the business case – changes take effect immediately on all metrics.',
     labelOptTenantRate: 'Tenant Sales Price',
     labelOptBattery: 'Battery Storage',
+    labelOptParticipation: 'Participation Rate',
     noBattery: 'No storage',
     tooltipOptTenantRate:
       'The sales price is the strongest revenue lever: every extra cent multiplies across the total electricity sold. It must remain at least 10% below the local utility tariff.',
     tooltipOptBattery:
       'A larger battery increases self-consumption and therefore the volume of tenant electricity sold — but also affects CAPEX. Check whether the additional revenue justifies the extra investment.',
+    tooltipOptParticipation:
+      'The higher the participation rate, the more tenants draw electricity from the system — increasing base fee and tenant electricity revenues. In practice, 100% participation is rarely achieved.',
   },
 } as const;
 

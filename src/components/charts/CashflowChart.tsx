@@ -9,7 +9,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  ReferenceLine,
 } from 'recharts';
 import { YearlyCashflow } from '../../types';
 
@@ -19,8 +18,13 @@ interface CashflowChartProps {
   onBarClick?: (index: number) => void;
 }
 
-export const CashflowChart: React.FC<CashflowChartProps> = ({ data, selectedIndex, onBarClick }) => {
-  const opacity = (idx: number) => (selectedIndex === undefined || idx === selectedIndex ? 1 : 0.35);
+export const CashflowChart: React.FC<CashflowChartProps> = ({
+  data,
+  selectedIndex,
+  onBarClick,
+}) => {
+  const opacity = (idx: number) =>
+    selectedIndex === undefined || idx === selectedIndex ? 1 : 0.35;
 
   return (
     <div className="h-[460px] w-full">
@@ -47,7 +51,7 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data, selectedInde
             tickLine={false}
           />
           <Tooltip
-            formatter={(value: number) => [`${value.toFixed(0)} €`, '']}
+            formatter={(value: number, name: string) => [`${value.toFixed(0)} €`, name]}
             contentStyle={{
               borderRadius: '12px',
               border: '1px solid #e2e8f0',
@@ -55,21 +59,30 @@ export const CashflowChart: React.FC<CashflowChartProps> = ({ data, selectedInde
             }}
           />
           <Legend />
-          <ReferenceLine y={0} stroke="#94a3b8" />
 
-          <Bar dataKey="totalRevenue" name="Einnahmen p.a." fill="#3b82f6" radius={[4, 4, 0, 0]}>
-            {data.map((_, idx) => (
-              <Cell key={idx} fill="#3b82f6" fillOpacity={opacity(idx)} />
+          <Bar dataKey="totalRevenue" name="Einnahmen p.a." radius={[4, 4, 0, 0]}>
+            {data.map((entry, idx) => (
+              <Cell
+                key={idx}
+                fill={entry.cashflow >= 0 ? '#22c55e' : '#ef4444'}
+                fillOpacity={opacity(idx)}
+              />
             ))}
           </Bar>
-          <Bar dataKey="opex" name="Betriebskosten (OPEX)" fill="#94a3b8" radius={[4, 4, 0, 0]}>
+          <Bar dataKey="opex" name="Betriebskosten (OPEX)" stackId="costs" fill="#94a3b8">
             {data.map((_, idx) => (
               <Cell key={idx} fill="#94a3b8" fillOpacity={opacity(idx)} />
             ))}
           </Bar>
-          <Bar dataKey="loanInstallment" name="Annuität" fill="#cbd5e1" radius={[4, 4, 0, 0]}>
+          <Bar
+            dataKey="loanInstallment"
+            name="Annuität"
+            stackId="costs"
+            fill="#64748b"
+            radius={[4, 4, 0, 0]}
+          >
             {data.map((_, idx) => (
-              <Cell key={idx} fill="#cbd5e1" fillOpacity={opacity(idx)} />
+              <Cell key={idx} fill="#64748b" fillOpacity={opacity(idx)} />
             ))}
           </Bar>
         </BarChart>

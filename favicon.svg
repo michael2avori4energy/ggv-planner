@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Roof -->
+  <polygon points="32,4 62,30 2,30" fill="#1e40af"/>
+  <!-- PV grid lines horizontal -->
+  <line x1="7" y1="22" x2="57" y2="22" stroke="#93c5fd" stroke-width="1.2"/>
+  <line x1="14" y1="15" x2="50" y2="15" stroke="#93c5fd" stroke-width="1.2"/>
+  <!-- PV grid lines vertical -->
+  <line x1="20" y1="8" x2="9" y2="30" stroke="#93c5fd" stroke-width="1.2"/>
+  <line x1="29" y1="5" x2="22" y2="30" stroke="#93c5fd" stroke-width="1.2"/>
+  <line x1="38" y1="5" x2="42" y2="30" stroke="#93c5fd" stroke-width="1.2"/>
+  <line x1="47" y1="8" x2="55" y2="30" stroke="#93c5fd" stroke-width="1.2"/>
+  <!-- House wall -->
+  <rect x="8" y="30" width="48" height="28" fill="#1e40af"/>
+  <!-- Door -->
+  <rect x="26" y="42" width="12" height="16" rx="1" fill="#bfdbfe"/>
+</svg>

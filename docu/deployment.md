@@ -13,8 +13,9 @@ Lege eine `.env`-Datei im Projektstammverzeichnis an (Vorlage: `.env.example`, f
 
 | Variable | Pflicht | Beschreibung |
 |---|---|---|
-| `VITE_GOOGLE_MAPS_API_KEY` | Ja | Google Maps API Key für die Adress-Autovervollständigung (Places API muss aktiviert sein) |
 | `VITE_PVGIS_BASE_URL` | Nein | Basis-URL für die PVGIS-API. Standard: `/pvgis-api/api/v5_2` (geht durch den konfigurierten Proxy) |
+
+> Die Adress-Autovervollständigung nutzt [Photon (Komoot)](https://photon.komoot.io/) auf Basis von OpenStreetMap – kein API-Key notwendig.
 
 #### Hinweis zur PVGIS-API
 
@@ -28,9 +29,8 @@ Die [PVGIS-API der EU-Kommission](https://re.jrc.ec.europa.eu/pvg_tools/en/) unt
 # 1. Abhängigkeiten installieren
 npm install
 
-# 2. .env anlegen
-cp .env.example .env   # oder manuell anlegen
-# VITE_GOOGLE_MAPS_API_KEY=<dein-key> eintragen
+# 2. .env anlegen (optional, nur falls PVGIS_BASE_URL angepasst werden soll)
+cp .env.example .env
 
 # 3. Entwicklungsserver starten
 npm run dev
@@ -59,7 +59,6 @@ Die Datei [`netlify.toml`](../netlify.toml) im Projektstammverzeichnis enthält 
    - **Build command:** `npm run build`
    - **Publish directory:** `dist`
 3. Umgebungsvariablen in Netlify setzen:
-   - `VITE_GOOGLE_MAPS_API_KEY` → deinen Google API Key
    - `VITE_PVGIS_BASE_URL` → `/pvgis-api/api/v5_2` (entspricht dem Proxy-Pfad aus `netlify.toml`)
 4. Deploy auslösen
 
@@ -105,6 +104,28 @@ VITE_PVGIS_BASE_URL=https://deine-domain.de/pvgis-api/api/v5_2 npm run build
 
 ---
 
+### Codequalität: Linter & Formatter
+
+Das Projekt verwendet **ESLint** (Linter) und **Prettier** (Formatter).
+
+| Befehl | Beschreibung |
+|---|---|
+| `npm run lint` | ESLint ausführen – zeigt Fehler und Warnungen an |
+| `npm run format` | Prettier formatiert alle Dateien in `src/` automatisch |
+| `npm run format:check` | Prettier nur prüfen, ohne Dateien zu ändern |
+| `npm run typecheck` | TypeScript-Typen prüfen (`tsc --noEmit`) |
+| `npm run check-all` | Alle Prüfungen kombiniert (typecheck + lint + format:check) |
+| `npm run fix-all` | Prettier formatieren + ESLint auto-fix |
+
+**Empfohlener Workflow vor einem Commit:**
+
+```bash
+npm run fix-all    # Prettier + ESLint auto-fix anwenden
+npm run check-all  # Alle Prüfungen abschließend ausführen
+```
+
+---
+
 <a name="english"></a>
 ## 🇺🇸 English
 
@@ -114,8 +135,9 @@ Create a `.env` file in the project root:
 
 | Variable | Required | Description |
 |---|---|---|
-| `VITE_GOOGLE_MAPS_API_KEY` | Yes | Google Maps API key for address autocomplete (Places API must be enabled) |
 | `VITE_PVGIS_BASE_URL` | No | Base URL for the PVGIS API. Default: `/pvgis-api/api/v5_2` (routed through the configured proxy) |
+
+> Address autocomplete uses [Photon (Komoot)](https://photon.komoot.io/) powered by OpenStreetMap — no API key required.
 
 #### Note on the PVGIS API
 
@@ -129,9 +151,8 @@ The [EU Commission PVGIS API](https://re.jrc.ec.europa.eu/pvg_tools/en/) does **
 # 1. Install dependencies
 npm install
 
-# 2. Create .env
-cp .env.example .env   # or create manually
-# Add VITE_GOOGLE_MAPS_API_KEY=<your-key>
+# 2. Create .env (optional, only if PVGIS_BASE_URL needs to be customized)
+cp .env.example .env
 
 # 3. Start development server
 npm run dev
@@ -160,7 +181,6 @@ The [`netlify.toml`](../netlify.toml) file already includes a proxy rule for the
    - **Build command:** `npm run build`
    - **Publish directory:** `dist`
 3. Set environment variables in Netlify:
-   - `VITE_GOOGLE_MAPS_API_KEY` → your Google API key
    - `VITE_PVGIS_BASE_URL` → `/pvgis-api/api/v5_2` (matches the proxy path from `netlify.toml`)
 4. Trigger a deploy
 
@@ -202,4 +222,26 @@ Set `VITE_PVGIS_BASE_URL` at build time to your public proxy URL, e.g.:
 
 ```bash
 VITE_PVGIS_BASE_URL=https://your-domain.com/pvgis-api/api/v5_2 npm run build
+```
+
+---
+
+### Code Quality: Linter & Formatter
+
+The project uses **ESLint** (linter) and **Prettier** (formatter).
+
+| Command | Description |
+|---|---|
+| `npm run lint` | Run ESLint – reports errors and warnings |
+| `npm run format` | Prettier auto-formats all files in `src/` |
+| `npm run format:check` | Check formatting without modifying files |
+| `npm run typecheck` | Check TypeScript types (`tsc --noEmit`) |
+| `npm run check-all` | All checks combined (typecheck + lint + format:check) |
+| `npm run fix-all` | Apply Prettier formatting + ESLint auto-fix |
+
+**Recommended workflow before committing:**
+
+```bash
+npm run fix-all    # Apply Prettier + ESLint auto-fixes
+npm run check-all  # Run all checks to verify
 ```

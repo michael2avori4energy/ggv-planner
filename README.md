@@ -39,7 +39,7 @@ Das Tool vergleicht zwei wesentliche Modelle:
 - **Framework:** React mit TypeScript
 - **Styling:** Tailwind CSS
 - **Charts:** Recharts zur Visualisierung von Cashflows und Energieflüssen
-- **APIs:** Integration von nötigen APIs für standortgenaue Ertragsdaten, aktuell PVGIS der EU sowie Google Maps für die Adresszuordnung.
+- **APIs:** Integration von nötigen APIs für standortgenaue Ertragsdaten, aktuell PVGIS der EU sowie Photon (Komoot/OpenStreetMap) für die Adresszuordnung – kein API-Key erforderlich.
 
 ## 🔧 Installation & Setup
 
@@ -87,7 +87,7 @@ The tool distinguishes between two primary models in Germany:
 - **Framework:** React with TypeScript
 - **Styling:** Tailwind CSS
 - **Charts:** Recharts for visualizing energy flows and financial forecasts
-- **APIs:** Integration of necessary APIs for location-specific yield data, currently PVGIS from the EU and Google Maps for address mapping.
+- **APIs:** Integration of necessary APIs for location-specific yield data, currently PVGIS from the EU and Photon (Komoot/OpenStreetMap) for address autocomplete – no API key required.
 
 ## 🔧 Installation & Setup
 
