@@ -12,6 +12,7 @@ import { KPIDisplay } from './KPIDisplay';
 import { EnergyMixChart } from './charts/EnergyMixChart';
 import { CashflowChart } from './charts/CashflowChart';
 import { Tooltip } from './Tooltip';
+import { BreakdownModal } from './BreakdownModal';
 import { AddressAutocomplete } from './AddressAutocomplete';
 import { useLanguage } from '../i18n/LanguageContext';
 import {
@@ -24,6 +25,8 @@ import {
   SlidersHorizontal,
   ChevronRight,
   ChevronLeft,
+  Info,
+  List,
 } from 'lucide-react';
 
 export const Configurator: React.FC = () => {
@@ -53,18 +56,18 @@ export const Configurator: React.FC = () => {
     heatPumpConsumptionKwh: 10000,
     hasEvCharging: false,
     evChargingPoints: 2,
-    evChargingConsumptionPerPointKwh: 2500,
+    evChargingConsumptionPerPointKwh: 2000,
     hasGeneralConsumption: false,
     generalConsumptionKwh: 2000,
   });
 
   const [economics, setEconomics] = useState<EconomicParams>({
     model: 'Mieterstrom',
-    tenantElectricityRate: 28,
+    tenantElectricityRate: 25,
     gridElectricityRate: 35,
-    feedInTariff: 7.1,
+    feedInTariff: 5,
     tenantElectricitySubsidy: 2.1,
-    baseFeePerMonth: 9.9,
+    baseFeePerMonth: 10,
     capex: 75000,
     opexPerYear: 1500,
     calculationPeriodYears: 20,
@@ -75,6 +78,19 @@ export const Configurator: React.FC = () => {
     loanTermYears: 10,
     interestRate: 4.5,
   });
+
+  const [loanPercentage, setLoanPercentage] = useState(
+    Math.round((50000 / 75000) * 100)
+  );
+
+  const [capexBreakdown, setCapexBreakdown] = useState<Record<string, number>>({
+    pvSystem: 0, battery: 0, installation: 0, consulting: 0, other: 0,
+  });
+  const [opexBreakdown, setOpexBreakdown] = useState<Record<string, number>>({
+    techManagement: 0, billing: 0, adminManagement: 0,
+  });
+  const [showCapexModal, setShowCapexModal] = useState(false);
+  const [showOpexModal, setShowOpexModal] = useState(false);
 
   // Snapshot der Kundeneingaben beim Betreten von Tab 3 — Basis für ±50%-Optimierungsbereiche
   const [optimizationBase, setOptimizationBase] = useState({
@@ -122,6 +138,14 @@ export const Configurator: React.FC = () => {
 
     return () => clearTimeout(timeout);
   }, [system, consumption, economics, financing]);
+
+  // Kreditbetrag aus Prozentsatz und CAPEX ableiten
+  useEffect(() => {
+    setFinancing((prev) => ({
+      ...prev,
+      loanAmount: Math.round(economics.capex * loanPercentage / 100),
+    }));
+  }, [economics.capex, loanPercentage]);
 
   // Beim Wechsel zu Tab 3 aktuelle Kundeneingaben als ±50%-Referenz einfrieren
   useEffect(() => {
@@ -186,10 +210,25 @@ export const Configurator: React.FC = () => {
           {/* TAB 1: Technical */}
           {activeTab === 1 && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <Calculator className="text-blue-500" />
                 {t.tab1Title}
               </h2>
+
+              <div className="flex items-start gap-2 p-3 mb-6 rounded-lg bg-blue-50 border border-blue-100 text-sm text-slate-600">
+                <Info size={16} className="text-blue-400 mt-0.5 shrink-0" />
+                <span>
+                  {t.infoExpertHint}{' '}
+                  <a
+                    href="https://www.bundesnetzagentur.de/899948"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {t.infoExpertLinkLabel}
+                  </a>
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* PV System */}
@@ -230,7 +269,7 @@ export const Configurator: React.FC = () => {
                     <input
                       type="range"
                       min="0"
-                      max="500"
+                      max="200"
                       step="5"
                       value={system.pvCapacityKwp}
                       onChange={(e) =>
@@ -348,7 +387,50 @@ export const Configurator: React.FC = () => {
                       />
                     </div>
                   </div>
+                  <div className="flex items-center gap-3 pt-2 w-full">
+                    <label className="flex items-center gap-2 cursor-pointer flex-1">
+                      <div className="relative">
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={consumption.hasGeneralConsumption}
+                          onChange={(e) =>
+                            setConsumption({
+                              ...consumption,
+                              hasGeneralConsumption: e.target.checked,
+                            })
+                          }
+                        />
+                        <div
+                          className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasGeneralConsumption ? 'bg-blue-500' : 'bg-slate-300'}`}
+                        ></div>
+                        <div
+                          className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasGeneralConsumption ? 'transform translate-x-4' : ''}`}
+                        ></div>
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
+                        {t.labelGeneralConsumption}
+                        <Tooltip text={t.tooltipGeneralConsumption} />
+                      </span>
+                    </label>
 
+                    {consumption.hasGeneralConsumption && (
+                      <div className="flex-1 flex items-center gap-2">
+                        <input
+                          type="number"
+                          value={consumption.generalConsumptionKwh}
+                          onChange={(e) =>
+                            setConsumption({
+                              ...consumption,
+                              generalConsumptionKwh: Number(e.target.value),
+                            })
+                          }
+                          className="w-24 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
+                        />
+                        <span className="text-sm text-slate-600">kWh</span>
+                      </div>
+                    )}
+                  </div>
                   <div className="flex items-center gap-3 pt-2 w-full">
                     <label className="flex items-center gap-2 cursor-pointer flex-1">
                       <div className="relative">
@@ -452,51 +534,6 @@ export const Configurator: React.FC = () => {
                       </div>
                     )}
                   </div>
-
-                  <div className="flex items-center gap-3 pt-2 w-full">
-                    <label className="flex items-center gap-2 cursor-pointer flex-1">
-                      <div className="relative">
-                        <input
-                          type="checkbox"
-                          className="sr-only"
-                          checked={consumption.hasGeneralConsumption}
-                          onChange={(e) =>
-                            setConsumption({
-                              ...consumption,
-                              hasGeneralConsumption: e.target.checked,
-                            })
-                          }
-                        />
-                        <div
-                          className={`block w-10 h-6 rounded-full transition-colors ${consumption.hasGeneralConsumption ? 'bg-blue-500' : 'bg-slate-300'}`}
-                        ></div>
-                        <div
-                          className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${consumption.hasGeneralConsumption ? 'transform translate-x-4' : ''}`}
-                        ></div>
-                      </div>
-                      <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
-                        {t.labelGeneralConsumption}
-                        <Tooltip text={t.tooltipGeneralConsumption} />
-                      </span>
-                    </label>
-
-                    {consumption.hasGeneralConsumption && (
-                      <div className="flex-1 flex items-center gap-2">
-                        <input
-                          type="number"
-                          value={consumption.generalConsumptionKwh}
-                          onChange={(e) =>
-                            setConsumption({
-                              ...consumption,
-                              generalConsumptionKwh: Number(e.target.value),
-                            })
-                          }
-                          className="w-24 px-3 py-1.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500"
-                        />
-                        <span className="text-sm text-slate-600">kWh</span>
-                      </div>
-                    )}
-                  </div>
                 </div>
               </div>
 
@@ -515,10 +552,25 @@ export const Configurator: React.FC = () => {
           {/* TAB 2: Economics */}
           {activeTab === 2 && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <Euro className="text-slate-500" />
                 {t.tab2Title}
               </h2>
+
+              <div className="flex items-start gap-2 p-3 mb-6 rounded-lg bg-blue-50 border border-blue-100 text-sm text-slate-600">
+                <Info size={16} className="text-blue-400 mt-0.5 shrink-0" />
+                <span>
+                  {t.infoExpertHint}{' '}
+                  <a
+                    href="https://www.bundesnetzagentur.de/899948"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {t.infoExpertLinkLabel}
+                  </a>
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Model selection */}
@@ -637,19 +689,27 @@ export const Configurator: React.FC = () => {
                   )}
 
                   <div className="pt-2">
-                    <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
-                      {t.labelGridRate}
-                      <Tooltip text={t.tooltipGridRate} />
-                    </label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      value={economics.gridElectricityRate}
-                      onChange={(e) =>
-                        setEconomics({ ...economics, gridElectricityRate: Number(e.target.value) })
-                      }
-                      className={inputClassEco}
-                    />
+                    <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
+                      <div>
+                        <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
+                          {t.labelGridRate}
+                          <Tooltip text={t.tooltipGridRate} />
+                        </label>
+                        <input
+                          type="number"
+                          step="0.1"
+                          value={economics.gridElectricityRate}
+                          onChange={(e) =>
+                            setEconomics({
+                              ...economics,
+                              gridElectricityRate: Number(e.target.value),
+                            })
+                          }
+                          className={inputClassEco}
+                        />
+                      </div>
+                      <div></div>
+                    </div>
                   </div>
                 </div>
 
@@ -674,6 +734,14 @@ export const Configurator: React.FC = () => {
                         }
                         className={inputClassEco}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowCapexModal(true)}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 hover:underline"
+                      >
+                        <List size={12} />
+                        {t.breakdownOpen}
+                      </button>
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
@@ -689,26 +757,47 @@ export const Configurator: React.FC = () => {
                         }
                         className={inputClassEco}
                       />
+                      <button
+                        type="button"
+                        onClick={() => setShowOpexModal(true)}
+                        className="mt-1.5 flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 hover:underline"
+                      >
+                        <List size={12} />
+                        {t.breakdownOpen}
+                      </button>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 pt-2">
-                    <div className="col-span-1">
-                      <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
-                        {t.labelLoanAmount}
-                        <Tooltip text={t.tooltipLoanAmount} />
-                      </label>
+                  <div className="pt-2">
+                    <label className="flex items-center text-sm font-medium text-slate-700 mb-2">
+                      {t.labelLoanAmount}
+                      <Tooltip text={t.tooltipLoanAmount} />
+                    </label>
+                    <div className="flex items-center gap-4">
                       <input
-                        type="number"
-                        step="1000"
-                        value={financing.loanAmount}
-                        onChange={(e) =>
-                          setFinancing({ ...financing, loanAmount: Number(e.target.value) })
-                        }
-                        className={inputClassEco}
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value={loanPercentage}
+                        onChange={(e) => setLoanPercentage(Number(e.target.value))}
+                        className="flex-1 h-2 accent-blue-600 cursor-pointer"
                       />
+                      <span className="text-sm font-semibold text-slate-700 whitespace-nowrap">
+                        {loanPercentage}% → {financing.loanAmount.toLocaleString('de-DE')} €
+                      </span>
                     </div>
-                    <div className="col-span-1">
+                    <div className="flex justify-between text-xs text-slate-400 mt-1 px-0.5">
+                      <span>0%</span>
+                      <span>25%</span>
+                      <span>50%</span>
+                      <span>75%</span>
+                      <span>100%</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-2">
+                    <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelInterestRate}
                         <Tooltip text={t.tooltipInterestRate} />
@@ -723,7 +812,7 @@ export const Configurator: React.FC = () => {
                         className={inputClassEco}
                       />
                     </div>
-                    <div className="col-span-1">
+                    <div>
                       <label className="flex items-center text-sm font-medium text-slate-700 mb-1">
                         {t.labelLoanTerm}
                         <Tooltip text={t.tooltipLoanTerm} />
@@ -1061,6 +1150,54 @@ export const Configurator: React.FC = () => {
           )}
         </div>
       </div>
+
+      <BreakdownModal
+        isOpen={showCapexModal}
+        title={t.breakdownCapexTitle}
+        hint={t.breakdownHint}
+        unit="€"
+        step={500}
+        items={[
+          { key: 'pvSystem', label: t.breakdownCapexPvSystem, tooltip: t.tooltipBreakdownCapexPvSystem },
+          { key: 'battery', label: t.breakdownCapexBattery, tooltip: t.tooltipBreakdownCapexBattery },
+          { key: 'installation', label: t.breakdownCapexInstallation, tooltip: t.tooltipBreakdownCapexInstallation },
+          { key: 'consulting', label: t.breakdownCapexConsulting, tooltip: t.tooltipBreakdownCapexConsulting },
+          { key: 'other', label: t.breakdownCapexOther, tooltip: t.tooltipBreakdownCapexOther },
+        ]}
+        values={capexBreakdown}
+        totalLabel={t.breakdownTotal}
+        applyLabel={t.breakdownApply}
+        cancelLabel={t.breakdownCancel}
+        onChangeValue={(key, value) => setCapexBreakdown({ ...capexBreakdown, [key]: value })}
+        onApply={(total) => {
+          setEconomics({ ...economics, capex: total });
+          setShowCapexModal(false);
+        }}
+        onClose={() => setShowCapexModal(false)}
+      />
+
+      <BreakdownModal
+        isOpen={showOpexModal}
+        title={t.breakdownOpexTitle}
+        hint={t.breakdownHint}
+        unit="€"
+        step={50}
+        items={[
+          { key: 'techManagement', label: t.breakdownOpexTechManagement, tooltip: t.tooltipBreakdownOpexTechManagement },
+          { key: 'billing', label: t.breakdownOpexBilling, tooltip: t.tooltipBreakdownOpexBilling },
+          { key: 'adminManagement', label: t.breakdownOpexAdminManagement, tooltip: t.tooltipBreakdownOpexAdminManagement },
+        ]}
+        values={opexBreakdown}
+        totalLabel={t.breakdownTotal}
+        applyLabel={t.breakdownApply}
+        cancelLabel={t.breakdownCancel}
+        onChangeValue={(key, value) => setOpexBreakdown({ ...opexBreakdown, [key]: value })}
+        onApply={(total) => {
+          setEconomics({ ...economics, opexPerYear: total });
+          setShowOpexModal(false);
+        }}
+        onClose={() => setShowOpexModal(false)}
+      />
     </div>
   );
 };
